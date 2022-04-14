@@ -6,6 +6,7 @@ import {
   InputBase,
   makeStyles,
   Toolbar,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import {
@@ -15,6 +16,8 @@ import {
   Search,
 } from "@material-ui/icons";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { getUser } from "../store/User/userSlice";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -72,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navbar = () => {
+  const user = useSelector(getUser);
   const [open, setOpen] = useState(false);
   const classes = useStyles({ open });
   return (
@@ -99,10 +103,9 @@ const Navbar = () => {
           <Badge badgeContent={2} color="secondary" className={classes.badge}>
             <Notifications />
           </Badge>
-          <Avatar
-            alt="Remy Sharp"
-            src="https://images.pexels.com/photos/8647814/pexels-photo-8647814.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-          />
+          <Tooltip title={user.name}>
+            <Avatar alt={user.name} src={user.avatar} />
+          </Tooltip>
         </div>
       </Toolbar>
     </AppBar>

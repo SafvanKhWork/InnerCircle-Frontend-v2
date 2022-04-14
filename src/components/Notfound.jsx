@@ -28,7 +28,7 @@ export default function Notfound({ is404, alone }) {
   }
   return (
     <Box>
-      <Alert variant="standard" fullwidth severity={msg.severity}>
+      <Alert variant="standard" severity={msg.severity}>
         <AlertTitle>
           <Typography
             style={{

@@ -1,6 +1,12 @@
-import { Box, Container, Divider, makeStyles } from "@material-ui/core";
+import {
+  Box,
+  Container,
+  Divider,
+  LinearProgress,
+  makeStyles,
+} from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { url } from "../config";
 import Notfound from "./Notfound";
@@ -18,10 +24,22 @@ const Feed = () => {
   const current = useSelector((state) => state.products.current);
   const products = current.slice(start, start + 5);
   const classes = useStyles();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setLoading(false);
+      return () => {
+        clearTimeout(timer);
+      };
+    }, 1000);
+  }, []);
+
   return (
     <Container className={classes.container}>
       {!current || current.length === 0 ? (
-        <Notfound />
+        <Fragment>{loading ? <LinearProgress /> : <Notfound />}</Fragment>
       ) : (
         <Fragment>
           <Box py={1} pb={5} display={"flex"} justifyContent={"space-between"}>
@@ -35,7 +53,7 @@ const Feed = () => {
               key={product._id}
               title={product.name}
               description={product.description}
-              img={url + product.images[0]}
+              imgs={product.images}
             />
           ))}
 

@@ -13,6 +13,8 @@ import {
   styled,
   Typography,
   Box,
+  Tooltip,
+  Collapse,
 } from "@material-ui/core";
 import { red, blue, green, yellow } from "@material-ui/core/colors";
 import {
@@ -28,9 +30,17 @@ import {
   SpokeIcon,
   Comment,
 } from "@material-ui/icons";
+import Carousel from "react-material-ui-carousel";
 import { format, formatDistance, formatRelative, subDays } from "date-fns";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { url } from "../config";
+import { Stack } from "@mui/material";
+import Comments from "./Details/Comments/Comments";
+import Bids from "./Details/Bids/Bids";
+import NewBid from "./Details/Bids/NewBid";
+import SearchBar from "./Details/Search/Search";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -55,7 +65,7 @@ const ExpandMoreFun = styled((props) => {
   }),
 }));
 
-const Post = ({ img, title, description, product }) => {
+const Post = ({ imgs, title, description, product }) => {
   const classes = useStyles();
 
   //State
@@ -64,11 +74,21 @@ const Post = ({ img, title, description, product }) => {
   const [expandedBid, setExpandedBid] = useState(false);
   const [expandedRecc, setExpandedRecc] = useState(false);
   const [expandedComment, setExpandedComment] = useState(false);
+  const [likes, setLikes] = useState(product.likes);
   const [liked, setLiked] = useState(product.like.includes(user._id) || false);
+  const [isFocused, setIsFocused] = useState(false);
 
   //Handlers
 
-  const handleLike = () => {
+  const handleLike = async () => {
+    const { data } = await axios.patch(`${url}/like/${product._id}`, "", {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+      },
+    });
+    if (data) {
+      setLikes(data.length);
+    }
     setLiked(!liked);
   };
 
@@ -106,7 +126,32 @@ const Post = ({ img, title, description, product }) => {
             })}`
           }
         />
-        <CardMedia className={classes.media} image={img} title="My Post" />
+        <div
+          onMouseEnter={() => setIsFocused(true)}
+          onMouseLeave={() => setIsFocused(false)}
+        >
+          <Carousel
+            indicators={false}
+            autoPlay={isFocused}
+            interval={3000}
+            stopAutoPlayOnHover={false}
+            navButtonsAlwaysInvisible
+            cycleNavigation={true}
+            duration={1000}
+            animation="fade"
+          >
+            {imgs.map((img) => (
+              <a href={url + img} target="_blank">
+                <CardMedia
+                  key={img}
+                  className={classes.media}
+                  image={url + img}
+                  title="My Post"
+                />
+              </a>
+            ))}
+          </Carousel>
+        </div>
         <CardContent>
           <Typography gutterBottom variant="h5">
             {title}
@@ -119,13 +164,9 @@ const Post = ({ img, title, description, product }) => {
           {liked ? <Favorite style={{ color: red[500] }} /> : <Favorite />}
         </IconButton>
         {liked ? (
-          <Typography style={{ color: red[500] }}>
-            {product.likes || 1}
-          </Typography>
+          <Typography style={{ color: red[500] }}>{likes || 1}</Typography>
         ) : (
-          <Typography style={{ color: "gray" }}>
-            {product.likes || 0}
-          </Typography>
+          <Typography style={{ color: "gray" }}>{likes || 0}</Typography>
         )}
 
         <ExpandMoreFun expand={expandedComment} onClick={handleExpandComment}>
@@ -152,6 +193,15 @@ const Post = ({ img, title, description, product }) => {
             <MonetizationOn />
           )}
         </ExpandMoreFun>
+        {expandedBid ? (
+          <Typography style={{ color: green[500] }}>
+            {product.bids.length || 0}
+          </Typography>
+        ) : (
+          <Typography style={{ color: "gray" }}>
+            {product.bids.length || 0}
+          </Typography>
+        )}
 
         <ExpandMoreFun expand={expandedRecc} onClick={handleExpandRecc}>
           {expandedRecc ? <Share style={{ color: yellow[700] }} /> : <Share />}
@@ -161,6 +211,23 @@ const Post = ({ img, title, description, product }) => {
           <ExpandMore />
         </ExpandMoreFun>
       </CardActions>
+      <Stack direction={"column-reverse"}>
+        <Collapse in={expandedBid} timeout="auto" unmountOnExit>
+          <Box px={1}>
+            <Bids product={product} bids={product.bids} />
+          </Box>
+        </Collapse>
+        <Collapse in={expandedRecc} timeout="auto" unmountOnExit>
+          <Box justifyContent="center" p={1}>
+            <SearchBar users={user.circle} />
+          </Box>
+        </Collapse>
+        <Collapse in={expandedComment} timeout="auto" unmountOnExit>
+          <Box textAlign={"justify"}>
+            <Comments product={product} comments={product.comments} />
+          </Box>
+        </Collapse>
+      </Stack>
     </Card>
   );
 };
