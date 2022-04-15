@@ -38,7 +38,7 @@ const updateBid = async (amount, id, weight, token) => {
   const bids = await axios.patch(
     `${url}/bid/${id}`,
     {
-      bid: amount * weight,
+      bid: Math.ceil(amount * weight),
     },
     {
       headers: { Authorization: `Bearer ${token}` },

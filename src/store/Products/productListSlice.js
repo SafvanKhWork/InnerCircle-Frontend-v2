@@ -70,6 +70,5 @@ export const {
   setSpecifiedList,
   refreshRecommandation,
   refreshCatagory,
-  refreshSpecifiedList,
 } = productListSlice.actions;
 export default productListSlice.reducer;

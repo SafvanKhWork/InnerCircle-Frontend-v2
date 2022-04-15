@@ -9,7 +9,7 @@ import {
   Divider,
 } from "@material-ui/core";
 import { AvatarGroup } from "@material-ui/lab";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrent } from "../store/Products/productListSlice";
 import {
@@ -18,6 +18,8 @@ import {
   findAllMatching,
 } from "array-of-objects-functions";
 import { current } from "@reduxjs/toolkit";
+import axios from "axios";
+import { url } from "../config";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -40,40 +42,28 @@ const useStyles = makeStyles((theme) => ({
 const Rightbar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const circle = useSelector((state) => state.user.circle);
+  const [friends, setFriends] = useState([]);
   const { catagories, current, discover } = useSelector(
     (state) => state.products
   );
+  useEffect(async () => {
+    const promises = circle.map(async (friend) => {
+      const { data } = await axios.get(`${url}/user/${friend}`);
+      return data;
+    });
+    const friendList = await Promise.all(promises);
+    setFriends(friendList);
+  }, [circle]);
   return (
     <Container className={classes.container}>
       <Typography className={classes.title} gutterBottom>
         Friends
       </Typography>
       <AvatarGroup max={6} style={{ marginBottom: 20 }}>
-        <Avatar
-          alt="Remy Sharp"
-          src="https://material-ui.com/static/images/avatar/1.jpg"
-        />
-        <Avatar
-          alt="Travis Howard"
-          src="https://material-ui.com/static/images/avatar/2.jpg"
-        />
-        <Avatar
-          alt="Cindy Baker"
-          src="https://material-ui.com/static/images/avatar/3.jpg"
-        />
-        <Avatar alt="Agnes Walker" src="" />
-        <Avatar
-          alt="Trevor Henderson"
-          src="https://material-ui.com/static/images/avatar/6.jpg"
-        />
-        <Avatar
-          alt="Trevor Henderson"
-          src="https://material-ui.com/static/images/avatar/7.jpg"
-        />
-        <Avatar
-          alt="Trevor Henderson"
-          src="https://material-ui.com/static/images/avatar/8.jpg"
-        />
+        {friends.map((friend) => (
+          <Avatar key={friend._id} alt={friend.name} src={friend.avatar} />
+        ))}
       </AvatarGroup>
       <Typography className={classes.title} gutterBottom>
         Gallery

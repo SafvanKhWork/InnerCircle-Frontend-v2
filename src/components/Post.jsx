@@ -141,9 +141,8 @@ const Post = ({ imgs, title, description, product }) => {
             animation="fade"
           >
             {imgs.map((img) => (
-              <a href={url + img} target="_blank">
+              <a key={img} href={url + img} target="_blank">
                 <CardMedia
-                  key={img}
                   className={classes.media}
                   image={url + img}
                   title="My Post"

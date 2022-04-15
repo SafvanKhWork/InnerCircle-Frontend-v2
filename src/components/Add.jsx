@@ -20,13 +20,14 @@ import {
 import { Add as AddIcon } from "@material-ui/icons";
 import { useEffect, useState } from "react";
 import MuiAlert from "@material-ui/lab/Alert";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Carousel from "react-material-ui-carousel";
 import axios from "axios";
 import { url, getAuthHeader } from "../config";
 
 import { Scrollbars } from "react-custom-scrollbars";
 import { getToken } from "../store/User/userSlice";
+import { setSpecifiedList } from "../store/Products/productListSlice";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -73,6 +74,9 @@ const Add = () => {
   const [files, setFiles] = useState([]);
   const [previewSource, setPreviewSource] = useState([]);
   const [price, setPrice] = useState(0);
+
+  const dispatch = useDispatch();
+  const discover = useSelector((state) => state.products.discover);
   const previewFile = (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -88,7 +92,7 @@ const Add = () => {
         productInfo,
         getAuthHeader(token)
       );
-      return { status: true, productId: response.data._id };
+      return { status: true, product: response.data };
     } catch (error) {
       return { status: false, productId: undefined };
     }
@@ -122,7 +126,11 @@ const Add = () => {
   };
   const handleCreate = async (event) => {
     try {
-      const { status, productId } = await addProduct(newProduct, token);
+      const {
+        status,
+        product: { productId },
+        product,
+      } = await addProduct(newProduct, token);
       files.forEach(async (singleFile) => {
         try {
           if (singleFile) {
@@ -138,6 +146,10 @@ const Add = () => {
           console.error(error);
         }
       });
+      if (product) {
+        discover.push(product);
+        dispatch(setSpecifiedList({ discover }));
+      }
       if (productId) {
         setOpenAlert(true);
         setPreviewSource([]);
@@ -204,6 +216,7 @@ const Add = () => {
                     id="outlined-multiline-static"
                     multiline
                     minRows={4}
+                    maxRows={4}
                     onChange={(event) => setDescription(event.target.value)}
                     value={description}
                     variant="outlined"

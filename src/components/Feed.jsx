@@ -34,7 +34,7 @@ const Feed = () => {
         clearTimeout(timer);
       };
     }, 1000);
-  }, []);
+  }, [current]);
 
   return (
     <Container className={classes.container}>

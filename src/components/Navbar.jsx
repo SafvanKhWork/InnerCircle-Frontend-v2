@@ -3,6 +3,7 @@ import {
   AppBar,
   Avatar,
   Badge,
+  Box,
   InputBase,
   makeStyles,
   Toolbar,
@@ -15,9 +16,11 @@ import {
   Notifications,
   Search,
 } from "@material-ui/icons";
-import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrent } from "../store/Products/productListSlice";
 import { getUser } from "../store/User/userSlice";
+import AccountSettings from "./Details/Header/HeadItems/AccountSettings";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -76,20 +79,65 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
   const user = useSelector(getUser);
+  const dispatch = useDispatch();
+  const discover = useSelector((state) => state.products.discover);
   const [open, setOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const productFinder = (isubstring, data) => {
+    const substring = isubstring.split(" ").join("").toLowerCase();
+    if (!substring) {
+      return data;
+    }
+    if (!data) {
+      return [];
+    }
+    const matches = data.filter((obj) => {
+      if (
+        obj.name.split(" ").join("").toLowerCase().includes(substring) ||
+        obj.product_name
+          .split(" ")
+          .join("")
+          .toLowerCase()
+          .includes(substring) ||
+        obj.model.split(" ").join("").toLowerCase().includes(substring)
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    return matches;
+  };
+
+  useEffect(() => {
+    dispatch(setCurrent(productFinder(searchQuery, discover)));
+  }, [searchQuery]);
   const classes = useStyles({ open });
   return (
     <AppBar position="fixed">
       <Toolbar className={classes.toolbar}>
         <Typography variant="h6" className={classes.logoLg}>
-          Lama Dev
+          Inner Circle
         </Typography>
         <Typography variant="h6" className={classes.logoSm}>
-          LAMA
+          InnerCircle
         </Typography>
         <div className={classes.search}>
-          <Search />
-          <InputBase placeholder="Search..." className={classes.input} />
+          <Box
+            p={1}
+            px={1}
+            display={"flex"}
+            style={{ verticalAlign: "center" }}
+          >
+            <Search />
+          </Box>
+          <InputBase
+            value={searchQuery}
+            onChange={(event) => {
+              setSearchQuery(event.target.value);
+            }}
+            className={classes.input}
+          />
           <Cancel className={classes.cancel} onClick={() => setOpen(false)} />
         </div>
         <div className={classes.icons}>
@@ -104,6 +152,7 @@ const Navbar = () => {
             <Notifications />
           </Badge>
           <Tooltip title={user.name}>
+            {/* <AccountSettings /> */}
             <Avatar alt={user.name} src={user.avatar} />
           </Tooltip>
         </div>

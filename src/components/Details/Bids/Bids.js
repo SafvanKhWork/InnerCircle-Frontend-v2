@@ -38,7 +38,7 @@ const Bids = (props) => {
       >
         <Box mx={1}>
           <Stack spacing={1}>
-            {bids.map((bid) => {
+            {bids?.map((bid) => {
               return (
                 <Box key={bid._id} p={1}>
                   <Bid

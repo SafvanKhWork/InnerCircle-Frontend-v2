@@ -11,6 +11,8 @@ import {
   Storefront,
   TabletMac,
 } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { setCurrent } from "../store/Products/productListSlice";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -51,9 +53,18 @@ const useStyles = makeStyles((theme) => ({
 
 const Leftbar = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { discover, feed, recommandation } = useSelector(
+    (state) => state.products
+  );
   return (
     <Container className={classes.container}>
-      <div className={classes.item}>
+      <div
+        onClick={(event) => {
+          dispatch(setCurrent(feed));
+        }}
+        className={classes.item}
+      >
         <Home className={classes.icon} />
         <Typography className={classes.text}>Homepage</Typography>
       </div>
@@ -81,7 +92,12 @@ const Leftbar = () => {
         <Bookmark className={classes.icon} />
         <Typography className={classes.text}>Collections</Typography>
       </div>
-      <div className={classes.item}>
+      <div
+        onClick={(event) => {
+          dispatch(setCurrent(discover));
+        }}
+        className={classes.item}
+      >
         <Storefront className={classes.icon} />
         <Typography className={classes.text}>Market Place</Typography>
       </div>
