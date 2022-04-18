@@ -13,6 +13,7 @@ import {
   setCurrent,
   setSpecifiedList,
 } from "./store/Products/productListSlice";
+import { Link, Route, Router, Routes } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   right: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 const App = () => {
   const token = useSelector(getToken);
   const dispatch = useDispatch();
-
+  const { loggedIn } = useSelector((state) => state.applicationState);
   //Get User By Token in Local Storage
   useEffect(() => {
     (async () => {
@@ -87,19 +88,25 @@ const App = () => {
   const classes = useStyles();
   return (
     <div>
-      <Navbar />
-      <Grid container>
-        <Grid item sm={2} xs={2}>
-          <Leftbar />
+      <Router>
+        <Navbar />
+        <Grid container>
+          <Grid item sm={2} xs={2}>
+            <Leftbar />
+          </Grid>
+          <Grid item sm={7} xs={10}>
+            {/* <Route path="/" element={loggedIn ? <Feed /> : <Feed />} />
+              <Route path="/profile" element={<div></div>} />
+              <Route path="/profile/:id" element={<div></div>} />
+             */}
+            <Feed />
+          </Grid>
+          <Grid item sm={3} className={classes.right}>
+            <Rightbar />
+          </Grid>
         </Grid>
-        <Grid item sm={7} xs={10}>
-          <Feed />
-        </Grid>
-        <Grid item sm={3} className={classes.right}>
-          <Rightbar />
-        </Grid>
-      </Grid>
-      <Add />
+        <Add />
+      </Router>
     </div>
   );
 };

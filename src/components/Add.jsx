@@ -128,7 +128,7 @@ const Add = () => {
     try {
       const {
         status,
-        product: { productId },
+        product: { _id: productId },
         product,
       } = await addProduct(newProduct, token);
       files.forEach(async (singleFile) => {
@@ -146,10 +146,6 @@ const Add = () => {
           console.error(error);
         }
       });
-      if (product) {
-        discover.push(product);
-        dispatch(setSpecifiedList({ discover }));
-      }
       if (productId) {
         setOpenAlert(true);
         setPreviewSource([]);
@@ -159,6 +155,11 @@ const Add = () => {
         setPrice(0);
         setName("");
         setOpen(false);
+      }
+      console.log(product);
+      if (productId) {
+        discover.push(product);
+        dispatch(setSpecifiedList({ discover }));
       }
     } catch (error) {}
   };

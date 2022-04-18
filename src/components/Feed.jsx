@@ -25,7 +25,10 @@ const Feed = () => {
   const products = current.slice(start, start + 5);
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
-
+  useEffect(() => {
+    setPage(1);
+    setStart(0);
+  }, [current]);
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => {

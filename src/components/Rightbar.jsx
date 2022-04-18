@@ -11,7 +11,10 @@ import {
 import { AvatarGroup } from "@material-ui/lab";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrent } from "../store/Products/productListSlice";
+import {
+  setCurrent,
+  setSpecifiedList,
+} from "../store/Products/productListSlice";
 import {
   getUniqueValues,
   removeFirstOneMatching,
@@ -19,7 +22,13 @@ import {
 } from "array-of-objects-functions";
 import { current } from "@reduxjs/toolkit";
 import axios from "axios";
-import { url } from "../config";
+import { getAuthHeader, url } from "../config";
+import Friends from "./Friends";
+import { Add, Done } from "@material-ui/icons";
+import { grey } from "@material-ui/core/colors";
+import { Button, IconButton, InputBase, Stack, TextField } from "@mui/material";
+import { Box } from "@mui/system";
+import { Scrollbars } from "react-custom-scrollbars";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -42,8 +51,10 @@ const useStyles = makeStyles((theme) => ({
 const Rightbar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const circle = useSelector((state) => state.user.circle);
+  const { circle, token } = useSelector((state) => state.user);
   const [friends, setFriends] = useState([]);
+  const [addCatagory, setAddCatagory] = useState(false);
+  const [newCatagory, setNewCatagory] = useState("");
   const { catagories, current, discover } = useSelector(
     (state) => state.products
   );
@@ -60,11 +71,13 @@ const Rightbar = () => {
       <Typography className={classes.title} gutterBottom>
         Friends
       </Typography>
-      <AvatarGroup max={6} style={{ marginBottom: 20 }}>
-        {friends.map((friend) => (
-          <Avatar key={friend._id} alt={friend.name} src={friend.avatar} />
-        ))}
-      </AvatarGroup>
+      <Friends>
+        <AvatarGroup max={6} style={{ marginBottom: 20 }}>
+          {friends.map((friend) => (
+            <Avatar key={friend._id} alt={friend.name} src={friend.avatar} />
+          ))}
+        </AvatarGroup>
+      </Friends>
       <Typography className={classes.title} gutterBottom>
         Gallery
       </Typography>
@@ -107,38 +120,95 @@ const Rightbar = () => {
         </ImageListItem>
       </ImageList>
       <Typography className={classes.title} gutterBottom>
-        Categories
-      </Typography>
-      {catagories?.map((catagory, i) => (
-        <Fragment key={catagory._id}>
-          <Link
-            component={"button"}
-            onClick={(event) => {
-              const matching = findAllMatching(
-                discover,
-                "catagory",
-                String(catagory.name)
-              );
-              dispatch(setCurrent(matching));
+        <Stack
+          direction={"row"}
+          sx={{
+            verticalAlign: "center",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          {`Categories `}
+          <IconButton
+            onClick={() => {
+              setAddCatagory(!addCatagory);
+              setNewCatagory("");
             }}
-            key={catagory.name}
-            href="#"
-            className={classes.link}
-            variant="body2"
           >
-            {catagory.name}
-          </Link>
-          {(i + 1) % 3 === 0 ? (
-            <Divider
-              key={"divider_" + i}
-              flexItem
-              style={{ marginBottom: 5 }}
-            />
-          ) : (
-            ""
-          )}
-        </Fragment>
-      ))}
+            <Add fontSize="small" color="disabled" />
+          </IconButton>
+        </Stack>
+      </Typography>
+      {addCatagory ? (
+        <Stack my={1} direction={"row"} spacing={1}>
+          <TextField
+            value={newCatagory}
+            onChange={(event) => setNewCatagory(event.target.value)}
+            fullWidth
+            size="small"
+          />
+          <Button
+            variant="outlined"
+            onClick={async () => {
+              if (newCatagory) {
+                const { data: catagories } = await axios.post(
+                  `${url}/catagory/new`,
+                  { name: newCatagory },
+                  getAuthHeader(token)
+                );
+                if (catagories) {
+                  dispatch(setSpecifiedList({ catagories }));
+                  setNewCatagory("");
+                }
+              }
+              setAddCatagory(false);
+            }}
+          >
+            ADD
+          </Button>
+        </Stack>
+      ) : (
+        ""
+      )}
+
+      <Scrollbars
+        style={{ height: 100 }}
+        autoHide
+        autoHideTimeout={0}
+        autoHideDuration={200}
+      >
+        {catagories?.map((catagory, i) => (
+          <Fragment key={catagory._id}>
+            <Link
+              to="#"
+              component={"button"}
+              onClick={(event) => {
+                const matching = findAllMatching(
+                  discover,
+                  "catagory",
+                  String(catagory.name)
+                );
+                dispatch(setCurrent(matching));
+              }}
+              key={catagory.name}
+              href="#"
+              className={classes.link}
+              variant="body2"
+            >
+              {catagory.name}
+            </Link>
+            {(i + 1) % 3 === 0 ? (
+              <Divider
+                key={"divider_" + i}
+                flexItem
+                style={{ marginBottom: 5 }}
+              />
+            ) : (
+              ""
+            )}
+          </Fragment>
+        ))}
+      </Scrollbars>
     </Container>
   );
 };

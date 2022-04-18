@@ -3,6 +3,7 @@ import {
   Bookmark,
   List,
   ExitToApp,
+  Face,
   Home,
   Person,
   PhotoCamera,
@@ -13,6 +14,7 @@ import {
 } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { setCurrent } from "../store/Products/productListSlice";
+import Friends from "./Friends";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -57,8 +59,13 @@ const Leftbar = () => {
   const { discover, feed, recommandation } = useSelector(
     (state) => state.products
   );
+
   return (
     <Container className={classes.container}>
+      <div className={classes.item}>
+        <Face className={classes.icon} />
+        <Typography className={classes.text}>Profile</Typography>
+      </div>
       <div
         onClick={(event) => {
           dispatch(setCurrent(feed));
@@ -66,32 +73,14 @@ const Leftbar = () => {
         className={classes.item}
       >
         <Home className={classes.icon} />
-        <Typography className={classes.text}>Homepage</Typography>
+        <Typography className={classes.text}>Feed</Typography>
       </div>
-      <div className={classes.item}>
-        <Person className={classes.icon} />
-        <Typography className={classes.text}>Friends</Typography>
-      </div>
-      <div className={classes.item}>
-        <List className={classes.icon} />
-        <Typography className={classes.text}>Lists</Typography>
-      </div>
-      <div className={classes.item}>
-        <PhotoCamera className={classes.icon} />
-        <Typography className={classes.text}>Camera</Typography>
-      </div>
-      <div className={classes.item}>
-        <PlayCircleOutline className={classes.icon} />
-        <Typography className={classes.text}>Videos</Typography>
-      </div>
-      <div className={classes.item}>
-        <TabletMac className={classes.icon} />
-        <Typography className={classes.text}>Apps</Typography>
-      </div>
-      <div className={classes.item}>
-        <Bookmark className={classes.icon} />
-        <Typography className={classes.text}>Collections</Typography>
-      </div>
+      <Friends>
+        <div className={classes.item}>
+          <Person className={classes.icon} />
+          <Typography className={classes.text}>Friends</Typography>
+        </div>
+      </Friends>
       <div
         onClick={(event) => {
           dispatch(setCurrent(discover));
@@ -100,10 +89,6 @@ const Leftbar = () => {
       >
         <Storefront className={classes.icon} />
         <Typography className={classes.text}>Market Place</Typography>
-      </div>
-      <div className={classes.item}>
-        <Settings className={classes.icon} />
-        <Typography className={classes.text}>Settings</Typography>
       </div>
       <div className={classes.item}>
         <ExitToApp className={classes.icon} />
