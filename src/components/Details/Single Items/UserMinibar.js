@@ -29,7 +29,7 @@ import {
   refetchUser,
   refreshUser,
 } from "../../../store/User/userSlice";
-import { Link } from "@material-ui/core";
+import { Link } from "react-router-dom";
 // import { getToken } from "../../../store/User/userSlice";
 // import { url } from "../../../config";
 

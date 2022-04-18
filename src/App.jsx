@@ -13,7 +13,8 @@ import {
   setCurrent,
   setSpecifiedList,
 } from "./store/Products/productListSlice";
-import { Link, Route, Router, Routes } from "react-router-dom";
+import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Notfound from "./components/Notfound";
 
 const useStyles = makeStyles((theme) => ({
   right: {
@@ -95,11 +96,13 @@ const App = () => {
             <Leftbar />
           </Grid>
           <Grid item sm={7} xs={10}>
-            {/* <Route path="/" element={loggedIn ? <Feed /> : <Feed />} />
-              <Route path="/profile" element={<div></div>} />
+            <Routes>
+              <Route path="/catagories/:catagory" element={<Feed />} />
               <Route path="/profile/:id" element={<div></div>} />
-             */}
-            <Feed />
+              <Route path="/profile" element={<div></div>} />
+              <Route path="/" element={<Feed />} />
+              <Route path="*" element={<Notfound is404 />} />
+            </Routes>
           </Grid>
           <Grid item sm={3} className={classes.right}>
             <Rightbar />

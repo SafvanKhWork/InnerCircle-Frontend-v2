@@ -7,10 +7,17 @@ import {
 } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import { Fragment, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { url } from "../config";
 import Notfound from "./Notfound";
 import Post from "./Post";
+import {
+  getUniqueValues,
+  removeFirstOneMatching,
+  findAllMatching,
+} from "array-of-objects-functions";
+import { setCurrent } from "../store/Products/productListSlice";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -19,12 +26,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Feed = () => {
+  const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [start, setStart] = useState(0);
-  const current = useSelector((state) => state.products.current);
+  const { current, discover } = useSelector((state) => state.products);
   const products = current.slice(start, start + 5);
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
+  const { catagory } = useParams();
+
+  useEffect(() => {
+    if (catagory) {
+      const matching = findAllMatching(discover, "catagory", String(catagory));
+      dispatch(setCurrent(matching));
+    }
+  }, [catagory, discover]);
   useEffect(() => {
     setPage(1);
     setStart(0);

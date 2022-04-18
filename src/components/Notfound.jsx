@@ -1,8 +1,20 @@
 import { Fragment } from "react";
 import { Alert, AlertTitle } from "@material-ui/lab";
-import { Box, Button, Divider, Typography } from "@material-ui/core";
-
+import {
+  Box,
+  Button,
+  Divider,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import { Container } from "@mui/material";
+const useStyles = makeStyles((theme) => ({
+  container: {
+    paddingTop: theme.spacing(10),
+  },
+}));
 export default function Notfound({ is404, alone }) {
+  const classes = useStyles();
   let msg;
   if (is404) {
     msg = {
@@ -27,7 +39,7 @@ export default function Notfound({ is404, alone }) {
     };
   }
   return (
-    <Box>
+    <Container className={is404 ? classes.container : ""}>
       <Alert variant="standard" severity={msg.severity}>
         <AlertTitle>
           <Typography
@@ -63,6 +75,6 @@ export default function Notfound({ is404, alone }) {
           </Typography>
         </Button>
       </Box> */}
-    </Box>
+    </Container>
   );
 }

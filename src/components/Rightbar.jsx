@@ -29,6 +29,7 @@ import { grey } from "@material-ui/core/colors";
 import { Button, IconButton, InputBase, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { Scrollbars } from "react-custom-scrollbars";
+import { Link as RouteLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -179,24 +180,20 @@ const Rightbar = () => {
       >
         {catagories?.map((catagory, i) => (
           <Fragment key={catagory._id}>
-            <Link
-              to="#"
-              component={"button"}
-              onClick={(event) => {
-                const matching = findAllMatching(
-                  discover,
-                  "catagory",
-                  String(catagory.name)
-                );
-                dispatch(setCurrent(matching));
-              }}
-              key={catagory.name}
-              href="#"
-              className={classes.link}
-              variant="body2"
+            <RouteLink
+              style={{ color: "inherit", textDecoration: "none" }}
+              to={`/catagories/${catagory.name}`}
             >
-              {catagory.name}
-            </Link>
+              <Link
+                component={"button"}
+                key={catagory.name}
+                href="#"
+                className={classes.link}
+                variant="body2"
+              >
+                {catagory.name}
+              </Link>
+            </RouteLink>
             {(i + 1) % 3 === 0 ? (
               <Divider
                 key={"divider_" + i}
