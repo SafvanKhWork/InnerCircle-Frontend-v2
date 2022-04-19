@@ -145,17 +145,41 @@ const Post = ({ imgs, title, description, product }) => {
                 <CardMedia
                   className={classes.media}
                   image={url + img}
-                  title="My Post"
+                  title={title}
                 />
               </a>
             ))}
           </Carousel>
         </div>
         <CardContent>
-          <Typography gutterBottom variant="h5">
-            {title}
-          </Typography>
-          <Typography variant="body2">{description}</Typography>
+          <Stack
+            style={{
+              display: "flex",
+              verticalAlign: "center",
+              justifyContent: "space-between",
+            }}
+            direction={"row"}
+          >
+            <Typography
+              style={{ display: "flex", verticalAlign: "center" }}
+              gutterBottom
+              variant="h5"
+            >
+              {title}
+            </Typography>
+            <Typography
+              variant="h5"
+              color="primary"
+              style={{ display: "flex", verticalAlign: "center", fontSize: 22 }}
+              gutterBottom
+            >
+              {"₹" + product.price}
+            </Typography>
+          </Stack>
+
+          <Collapse in={expandedDesc} timeout="auto" unmountOnExit>
+            <Typography variant="body2">{description}</Typography>
+          </Collapse>
         </CardContent>
       </CardActionArea>
       <CardActions p={1} disableSpacing>

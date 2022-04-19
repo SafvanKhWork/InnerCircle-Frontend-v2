@@ -47,12 +47,22 @@ const useStyles = makeStyles((theme) => ({
     color: "#555",
     fontSize: 16,
   },
+  seen: {
+    marginRight: theme.spacing(2),
+    color: "#555",
+    fontSize: 16,
+  },
+  unseen: {
+    marginRight: theme.spacing(2),
+    color: "#f50057",
+    fontSize: 16,
+  },
 }));
 
 const Rightbar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { circle, token } = useSelector((state) => state.user);
+  const { circle, token, notifications } = useSelector((state) => state.user);
   const [friends, setFriends] = useState([]);
   const [addCatagory, setAddCatagory] = useState(false);
   const [newCatagory, setNewCatagory] = useState("");
@@ -80,46 +90,35 @@ const Rightbar = () => {
         </AvatarGroup>
       </Friends>
       <Typography className={classes.title} gutterBottom>
-        Gallery
+        Notifications
       </Typography>
-      <ImageList rowHeight={100} style={{ marginBottom: 20 }} cols={2}>
-        <ImageListItem>
-          <img
-            src="https://material-ui.com/static/images/image-list/breakfast.jpg"
-            alt=""
-          />
-        </ImageListItem>
-        <ImageListItem>
-          <img
-            src="https://material-ui.com/static/images/image-list/burgers.jpg"
-            alt=""
-          />
-        </ImageListItem>
-        <ImageListItem>
-          <img
-            src="https://material-ui.com/static/images/image-list/camera.jpg"
-            alt=""
-          />
-        </ImageListItem>
-        <ImageListItem>
-          <img
-            src="https://material-ui.com/static/images/image-list/morning.jpg"
-            alt=""
-          />
-        </ImageListItem>
-        <ImageListItem>
-          <img
-            src="https://material-ui.com/static/images/image-list/hats.jpg"
-            alt=""
-          />
-        </ImageListItem>
-        <ImageListItem>
-          <img
-            src="https://material-ui.com/static/images/image-list/vegetables.jpg"
-            alt=""
-          />
-        </ImageListItem>
-      </ImageList>
+      <Box pb={2}>
+        <Scrollbars
+          style={{ height: 350 }}
+          autoHide
+          autoHideTimeout={0}
+          autoHideDuration={200}
+        >
+          <Stack direction={"column-reverse"} spacing={0.4}>
+            {notifications.map((notification) => {
+              const newNotification = !notification.seen;
+              return (
+                <Fragment key={notification._id}>
+                  <Divider orientation="horizontal" />
+
+                  <Typography
+                    className={newNotification ? classes.unseen : classes.seen}
+                    // style={{ fontSize: 16, fontFamily:'revert' }}
+                    // color={newNotification ? "HighlightText" : "GrayText"}
+                  >
+                    {notification.message}
+                  </Typography>
+                </Fragment>
+              );
+            })}
+          </Stack>
+        </Scrollbars>
+      </Box>
       <Typography className={classes.title} gutterBottom>
         <Stack
           direction={"row"}
@@ -171,7 +170,6 @@ const Rightbar = () => {
       ) : (
         ""
       )}
-
       <Scrollbars
         style={{ height: 100 }}
         autoHide

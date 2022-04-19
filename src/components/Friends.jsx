@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     borderRadius: "5px",
-    width: 450,
+    width: 500,
     height: 550,
     backgroundColor: "white",
     position: "absolute",
@@ -70,6 +70,13 @@ const Friends = (props) => {
   const [query, setQuery] = useState("");
   const [foundFriend, setFoundFriend] = useState(circle);
   const [foundUser, setFoundUser] = useState([]);
+  const [isLandscape, setIsLandscape] = useState(
+    window.matchMedia("(orientation: landscape").matches
+  );
+  window.addEventListener("resize", () => {
+    setIsLandscape(window.matchMedia("(orientation: landscape").matches);
+  });
+
   const getMatchedUsers = async (currSearchQuery) => {
     if (!currSearchQuery) {
       return [];
@@ -159,18 +166,41 @@ const Friends = (props) => {
             </Box>
 
             <Scrollbars
-              style={{ height: 420 }}
+              style={{ height: isLandscape ? 420 : 580 }}
               autoHide
               autoHideTimeout={0}
               autoHideDuration={200}
             >
               {/* <Typography color={"GrayText"} fontWeight={"bold"}>
-                  Friends
+                  FriendsW
                 </Typography> 
                  <Divider orientation="horizontal" sx={{ color: "GrayText" }} />*/}
               <Box m={1}>
                 {!search || query === "" ? (
                   <Stack spacing={1}>
+                    {account.friendRequest !== 0 ? (
+                      <Fragment>
+                        <Typography color={"GrayText"} fontWeight={"bold"}>
+                          Friend Requests
+                        </Typography>
+                        <Divider
+                          orientation="horizontal"
+                          sx={{ color: "GrayText" }}
+                        />
+                        {account.friendRequest.map((friend) => (
+                          <UserMinibar key={friend} user={friend} />
+                        ))}
+                      </Fragment>
+                    ) : (
+                      ""
+                    )}
+                    <Typography color={"GrayText"} fontWeight={"bold"}>
+                      Friends
+                    </Typography>
+                    <Divider
+                      orientation="horizontal"
+                      sx={{ color: "GrayText" }}
+                    />
                     {circle.map((friend) => (
                       <UserMinibar key={friend} user={friend} />
                     ))}

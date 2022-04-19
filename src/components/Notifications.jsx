@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     borderRadius: "5px",
-    width: 450,
+    width: 500,
     height: 550,
     backgroundColor: "white",
     position: "absolute",
@@ -77,6 +77,14 @@ const Notifications = (props) => {
   const classes = useStyles();
   const { notifications, token } = useSelector((state) => state.user);
   const [open, setOpen] = useState(false);
+
+  const [isLandscape, setIsLandscape] = useState(
+    window.matchMedia("(orientation: landscape").matches
+  );
+  window.addEventListener("resize", () => {
+    setIsLandscape(window.matchMedia("(orientation: landscape").matches);
+  });
+
   return (
     <>
       <Tooltip
@@ -102,24 +110,48 @@ const Notifications = (props) => {
       >
         <Container className={classes.container}>
           <Box display={"flex"} style={{ verticalAlign: "center" }} pt={2}>
-            <Notification
-              style={{ verticalAlign: "center", display: "flex" }}
-              color="disabled"
-            />
-            <Typography
-              px={1}
-              style={{ verticalAlign: "center", display: "flex" }}
-              fontSize={18}
-              sx={{ color: "GrayText" }}
-              fontFamily={"sans-serif"}
-              textAlign={"center"}
+            <div
+              onClick={async () => {
+                const { data: notifications } = await axios.patch(
+                  `${url}/user/notifications/seen`,
+                  "",
+                  getAuthHeader(token)
+                );
+                if (notifications) {
+                  dispatch(refreshUserField({ notifications }));
+                }
+                setOpen(false);
+              }}
             >
-              Notifications
-            </Typography>
+              <Stack direction={"row"}>
+                <Notification
+                  style={{
+                    alignSelf: "center",
+                    verticalAlign: "center",
+                    display: "flex",
+                  }}
+                />
+
+                <Typography
+                  px={1}
+                  style={{
+                    alignSelf: "center",
+                    verticalAlign: "center",
+                    display: "flex",
+                  }}
+                  fontSize={18}
+                  fontWeight={"bold"}
+                  fontFamily={"sans-serif"}
+                  textAlign={"center"}
+                >
+                  Notifications
+                </Typography>
+              </Stack>
+            </div>
           </Box>
           <Box mx={1} pt={1}>
             <Scrollbars
-              style={{ height: 480 }}
+              style={{ height: isLandscape ? 480 : 600 }}
               autoHide
               autoHideTimeout={0}
               autoHideDuration={200}
@@ -129,6 +161,7 @@ const Notifications = (props) => {
                   const newNotification = !notification.seen;
                   return (
                     <Fragment key={notification._id}>
+                      <Divider orientation="horizontal" />
                       <Stack direction={"row"} spacing={1}>
                         {/* {newNotification ? (
                           <FiberManualRecord color="error" />
@@ -141,7 +174,6 @@ const Notifications = (props) => {
                           {notification.message}
                         </Typography>
                       </Stack>
-                      <Divider orientation="horizontal" />
                     </Fragment>
                   );
                 })}

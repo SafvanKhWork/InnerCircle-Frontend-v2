@@ -4,6 +4,7 @@ import {
   Avatar,
   Badge,
   Box,
+  IconButton,
   InputBase,
   makeStyles,
   Toolbar,
@@ -15,15 +16,49 @@ import {
   ShoppingCart,
   Notifications as Notification,
   Search,
+  Refresh,
+  Sync,
 } from "@material-ui/icons";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrent } from "../store/Products/productListSlice";
-import { getUser } from "../store/User/userSlice";
+import { url } from "../config";
+import { createStyles } from "@material-ui/styles";
+import {
+  setCurrent,
+  setSpecifiedList,
+} from "../store/Products/productListSlice";
+import { getUser, refetchUser } from "../store/User/userSlice";
 import AccountSettings from "./Details/Header/HeadItems/AccountSettings";
 import Notifications from "./Notifications";
 
+// const useStyles = makeStyles(() =>
+//   createStyles({
+//     rotateIcon: {
+//       animation: "$spin 2s linear infinite",
+//     },
+//     "@keyframes spin": {
+//       "0%": {
+//         transform: "rotate(360deg)",
+//       },
+//       "100%": {
+//         transform: "rotate(0deg)",
+//       },
+//     },
+//   })
+// );
 const useStyles = makeStyles((theme) => ({
+  rotateIcon: {
+    animation: "$spin 2s linear infinite",
+  },
+  "@keyframes spin": {
+    "0%": {
+      transform: "rotate(360deg)",
+    },
+    "100%": {
+      transform: "rotate(0deg)",
+    },
+  },
   toolbar: {
     display: "flex",
     justifyContent: "space-between",
@@ -80,9 +115,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Navbar = () => {
   const user = useSelector(getUser);
+  const { token } = user;
   const dispatch = useDispatch();
   const discover = useSelector((state) => state.products.discover);
   const [unseen, setUnseen] = useState(0);
+  const [inSync, setInSync] = useState(0);
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const productFinder = (isubstring, data) => {
@@ -93,6 +130,7 @@ const Navbar = () => {
     if (!data) {
       return [];
     }
+
     const matches = data.filter((obj) => {
       if (
         obj.name.split(" ").join("").toLowerCase().includes(substring) ||
@@ -158,9 +196,62 @@ const Navbar = () => {
             className={classes.searchButton}
             onClick={() => setOpen(true)}
           />
-          <Badge badgeContent={4} color="secondary" className={classes.badge}>
-            <ShoppingCart />
-          </Badge>
+          <IconButton
+            onClick={async () => {
+              setInSync(true);
+              const loader = setTimeout(() => {
+                setInSync(false);
+                return () => {
+                  clearTimeout(loader);
+                };
+              }, 1000);
+              try {
+                const { data: discover } = await axios.get(`${url}/products`);
+                const { data: catagories } = await axios.get(
+                  `${url}/catagories`
+                );
+                if (token === "") {
+                  dispatch(
+                    setSpecifiedList({
+                      current: discover,
+                      discover,
+                      catagories,
+                    })
+                  );
+                  return;
+                }
+                const { data: feed } = await axios.get(`${url}/feed`, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                });
+                const {
+                  data: [recommanded, recommandors],
+                } = await axios.get(`${url}/recommanded`, {
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                });
+                dispatch(refetchUser);
+                dispatch(
+                  setSpecifiedList({
+                    recommandors,
+                    discover,
+                    feed,
+                    catagories,
+                    recommandation: recommanded,
+                  })
+                );
+              } catch (error) {
+                console.log({ ...error });
+              }
+            }}
+          >
+            <Sync
+              style={{ color: "white" }}
+              className={inSync ? classes.rotateIcon : classes.icons}
+            />
+          </IconButton>
           <Badge
             badgeContent={unseen > 0 ? unseen : 0}
             color="secondary"
