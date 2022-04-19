@@ -10,13 +10,11 @@ export const refetchUser = createAsyncThunk(
   async (args, thunkAPI) => {
     thunkAPI.dispatch(setLoading(true));
     const state = thunkAPI.getState();
-    console.log(state.user.token);
     const response = await axios.get(`${url}/user/me`, {
       headers: {
         Authorization: `Bearer ${state.user.token}`,
       },
     });
-    console.log(state.user.token);
     thunkAPI.dispatch(setLoading(false));
     if (response.data) {
       thunkAPI.dispatch(refreshUser(response.data));
@@ -36,6 +34,7 @@ const initialState = {
   circle: [],
   history: [],
   recommandation: [],
+  notifications: [],
   token: window.localStorage.getItem("inner-circle-token")?.split('"')[1] || "",
 };
 
@@ -48,50 +47,9 @@ const userSlice = createSlice({
         .getItem("inner-circle-token")
         .split('"')[1];
     },
-    // signIn: async (state, { payload }) => {
-    //   const { credentials, setErrorMessage, setIsLoggedIn, setInProgress } =
-    //     payload;
-    //   try {
-    //     setInProgress(true);
-    //     const response = await axios.post(`${url}/user/login`, credentials);
-    //     const { data } = response;
-    //     if (data) {
-    //       state.token = data.token;
-    //       state._id = data.user._id;
-    //       state.name = data.user.name;
-    //       state.email = data.user.email;
-    //       state.username = data.user.username;
-    //       state.avatar = data.user.avatar;
-    //       state.friendRequest = data.user.friendRequest;
-    //       state.sentFriendRequest = data.user.sentFriendRequest;
-    //       state.circle = data.user.circle;
-    //       state.history = data.user.history;
-    //       state.recommandation = data.user.recommandation;
-    //       window.localStorage.setItem(
-    //         "inner-circle-token",
-    //         JSON.stringify(data.token)
-    //       );
-
-    //       setInProgress(false);
-    //       setIsLoggedIn(true);
-    //     }
-    //   } catch (error) {
-    //     setInProgress(false);
-    //     setErrorMessage(`Provided Email Address or Password is Invalid`);
-    //   }
-    // },
     refreshUser: (state, { payload }) => {
       //Always runs at init
       try {
-        // if (!payload) {
-        //   axios
-        //     .get(`${url}/user/me`, {
-        //       headers: { Authorization: `Bearer ${state.token}` },
-        //     })
-        //     .then((value) => JSON.parse(value))
-        //     .then((value) => (payload = value))
-        //     .catch((error) => console.log(error.message));
-        // }
         if (payload) {
           state._id = payload._id;
           state.name = payload.name;
@@ -103,6 +61,7 @@ const userSlice = createSlice({
           state.circle = payload.circle;
           state.history = payload.history;
           state.recommandation = payload.recommandation;
+          state.notifications = payload.notifications;
         }
       } catch (error) {
         console.log(error.message);

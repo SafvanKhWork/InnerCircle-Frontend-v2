@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { url } from "../config";
 import Notfound from "./Notfound";
+import { useNavigate } from "react-router-dom";
 import Post from "./Post";
 import {
   getUniqueValues,
@@ -25,11 +26,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Feed = () => {
+const Feed = (props) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [start, setStart] = useState(0);
-  const { current, discover } = useSelector((state) => state.products);
+  const { current, discover, feed } = useSelector((state) => state.products);
   const products = current.slice(start, start + 5);
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
@@ -40,7 +42,22 @@ const Feed = () => {
       const matching = findAllMatching(discover, "catagory", String(catagory));
       dispatch(setCurrent(matching));
     }
-  }, [catagory, discover]);
+    if (props.feed) {
+      dispatch(setCurrent(feed));
+    }
+    if (props.discover) {
+      dispatch(setCurrent(discover));
+    }
+    if (!props.feed && !props.discover && !catagory) {
+      if (feed.length === 0) {
+        navigate("/discover");
+        // dispatch(setCurrent(discover));
+      } else {
+        navigate("/feed");
+        //dispatch(setCurrent(feed));
+      }
+    }
+  }, [catagory, discover, props]);
   useEffect(() => {
     setPage(1);
     setStart(0);

@@ -11,8 +11,10 @@ import {
   Settings,
   Storefront,
   TabletMac,
+  Explore,
 } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { setCurrent } from "../store/Products/productListSlice";
 import Friends from "./Friends";
 
@@ -56,40 +58,39 @@ const useStyles = makeStyles((theme) => ({
 const Leftbar = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { discover, feed, recommandation } = useSelector(
-    (state) => state.products
-  );
 
   return (
     <Container className={classes.container}>
-      <div className={classes.item}>
-        <Face className={classes.icon} />
-        <Typography className={classes.text}>Profile</Typography>
-      </div>
-      <div
-        onClick={(event) => {
-          dispatch(setCurrent(feed));
-        }}
-        className={classes.item}
+      <Link
+        style={{ color: "inherit", textDecoration: "none" }}
+        to={"/profile"}
       >
-        <Home className={classes.icon} />
-        <Typography className={classes.text}>Feed</Typography>
-      </div>
+        <div className={classes.item}>
+          <Face className={classes.icon} />
+          <Typography className={classes.text}>Profile</Typography>
+        </div>
+      </Link>
+      <Link style={{ color: "inherit", textDecoration: "none" }} to={"/feed"}>
+        <div className={classes.item}>
+          <Home className={classes.icon} />
+          <Typography className={classes.text}>Feed</Typography>
+        </div>
+      </Link>
       <Friends>
         <div className={classes.item}>
           <Person className={classes.icon} />
           <Typography className={classes.text}>Friends</Typography>
         </div>
       </Friends>
-      <div
-        onClick={(event) => {
-          dispatch(setCurrent(discover));
-        }}
-        className={classes.item}
+      <Link
+        style={{ color: "inherit", textDecoration: "none" }}
+        to={"/discover"}
       >
-        <Storefront className={classes.icon} />
-        <Typography className={classes.text}>Market Place</Typography>
-      </div>
+        <div className={classes.item}>
+          <Explore className={classes.icon} />
+          <Typography className={classes.text}>Discover</Typography>
+        </div>
+      </Link>
       <div className={classes.item}>
         <ExitToApp className={classes.icon} />
         <Typography className={classes.text}>Logout</Typography>

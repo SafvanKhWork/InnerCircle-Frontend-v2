@@ -16,6 +16,8 @@ import {
 import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Notfound from "./components/Notfound";
 
+import { refetchUser } from "./store/User/userSlice";
+
 const useStyles = makeStyles((theme) => ({
   right: {
     [theme.breakpoints.down("sm")]: {
@@ -38,6 +40,16 @@ const App = () => {
     })();
   }, []);
 
+  useEffect(async () => {
+    if (token && token !== "") {
+      const reloader = setInterval(() => {
+        dispatch(refetchUser);
+        return () => {
+          clearInterval(reloader);
+        };
+      }, 10000);
+    }
+  }, [token]);
   //Get Products
   useEffect(async () => {
     try {
@@ -66,12 +78,6 @@ const App = () => {
         },
       });
 
-      if (feed.length === 0) {
-        dispatch(setCurrent(discover));
-      } else {
-        dispatch(setCurrent(feed));
-      }
-
       dispatch(
         setSpecifiedList({
           recommandors,
@@ -98,6 +104,8 @@ const App = () => {
           <Grid item sm={7} xs={10}>
             <Routes>
               <Route path="/catagories/:catagory" element={<Feed />} />
+              <Route path="/feed" element={<Feed feed />} />
+              <Route path="/discover" element={<Feed discover />} />
               <Route path="/profile/:id" element={<div></div>} />
               <Route path="/profile" element={<div></div>} />
               <Route path="/" element={<Feed />} />

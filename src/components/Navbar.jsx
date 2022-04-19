@@ -13,7 +13,7 @@ import {
 import {
   Cancel,
   ShoppingCart,
-  Notifications,
+  Notifications as Notification,
   Search,
 } from "@material-ui/icons";
 import { useEffect, useState } from "react";
@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCurrent } from "../store/Products/productListSlice";
 import { getUser } from "../store/User/userSlice";
 import AccountSettings from "./Details/Header/HeadItems/AccountSettings";
+import Notifications from "./Notifications";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -81,6 +82,7 @@ const Navbar = () => {
   const user = useSelector(getUser);
   const dispatch = useDispatch();
   const discover = useSelector((state) => state.products.discover);
+  const [unseen, setUnseen] = useState(0);
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const productFinder = (isubstring, data) => {
@@ -108,6 +110,17 @@ const Navbar = () => {
     });
     return matches;
   };
+  useEffect(() => {
+    let tempUnseen = 0;
+    user.notifications.forEach((notification) => {
+      if (!notification.seen) {
+        tempUnseen += 1;
+      }
+    });
+    if (tempUnseen) {
+      setUnseen(tempUnseen);
+    }
+  }, [user.notifications]);
 
   useEffect(() => {
     dispatch(setCurrent(productFinder(searchQuery, discover)));
@@ -148,11 +161,16 @@ const Navbar = () => {
           <Badge badgeContent={4} color="secondary" className={classes.badge}>
             <ShoppingCart />
           </Badge>
-          <Badge badgeContent={2} color="secondary" className={classes.badge}>
-            <Notifications />
+          <Badge
+            badgeContent={unseen > 0 ? unseen : 0}
+            color="secondary"
+            className={classes.badge}
+          >
+            <Notifications>
+              <Notification />
+            </Notifications>
           </Badge>
           <Tooltip title={user.name}>
-            {/* <AccountSettings /> */}
             <Avatar alt={user.name} src={user.avatar} />
           </Tooltip>
         </div>
