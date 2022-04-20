@@ -155,7 +155,6 @@ const Navbar = () => {
         tempUnseen += 1;
       }
     });
-    console.log("Setting unseen to ==>", tempUnseen, user.notifications);
     setUnseen(tempUnseen);
   }, [user]);
 

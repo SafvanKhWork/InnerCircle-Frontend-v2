@@ -14,7 +14,6 @@ const applicationStateSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.loggedIn = true;
-      console.log(state);
     },
     setLoading: (state, { payload }) => (state.loading = payload),
     logout: (state, action) => {

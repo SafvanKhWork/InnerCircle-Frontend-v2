@@ -13,11 +13,19 @@ import {
   setCurrent,
   setSpecifiedList,
 } from "./store/Products/productListSlice";
-import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import {
+  Link,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import Notfound from "./components/Notfound";
 
 import { refetchUser } from "./store/User/userSlice";
 import { login } from "./store/ApplicationStates/applicationStateSlice";
+import Landing from "./components/Landing";
+import Redirect from "./components/Redirect";
 
 const useStyles = makeStyles((theme) => ({
   right: {
@@ -104,30 +112,36 @@ const App = () => {
   return (
     <div>
       <Router>
-        <Navbar />
-        <Grid container>
-          <Grid item sm={2} xs={2}>
-            <Leftbar />
-          </Grid>
-          <Grid item sm={7} xs={10}>
-            <Routes>
-              <Route path="/catagories/:catagory" element={<Feed />} />
-              <Route path="/feed" element={<Feed feed />} />
-              <Route path="/discover" element={<Feed discover />} />
-              <Route path="/profile/:id" element={<div></div>} />
-              <Route path="/profile" element={<div></div>} />
-              <Route
-                path="/"
-                element={loggedIn ? <Feed /> : <div>PENDING</div>}
-              />
-              <Route path="*" element={<Notfound is404 />} />
-            </Routes>
-          </Grid>
-          <Grid item sm={3} className={classes.right}>
-            <Rightbar />
-          </Grid>
-        </Grid>
-        <Add />
+        {loggedIn ? (
+          <div>
+            <Navbar />
+            <Grid container>
+              <Grid item sm={2} xs={2}>
+                <Leftbar />
+              </Grid>
+              <Grid item sm={7} xs={10}>
+                <Routes>
+                  <Route path="/catagories/:catagory" element={<Feed />} />
+                  <Route path="/feed" element={<Feed feed />} />
+                  <Route path="/discover" element={<Feed discover />} />
+                  <Route path="/profile/:id" element={<div></div>} />
+                  <Route path="/profile" element={<div></div>} />
+                  <Route path="/" element={<Feed />} />
+                  <Route path="*" element={<Notfound is404 />} />
+                </Routes>
+              </Grid>
+              <Grid item sm={3} className={classes.right}>
+                <Rightbar />
+              </Grid>
+            </Grid>
+            <Add />
+          </div>
+        ) : (
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="*" element={<Redirect />} />
+          </Routes>
+        )}
       </Router>
     </div>
   );
