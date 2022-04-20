@@ -12,14 +12,19 @@ const applicationStateSlice = createSlice({
   name: "applicationState",
   initialState,
   reducers: {
-    login: (state, action) => (state.loggedIn = true),
+    login: (state, action) => {
+      state.loggedIn = true;
+      console.log(state);
+    },
     setLoading: (state, { payload }) => (state.loading = payload),
     logout: (state, action) => {
       const tempState = { ...current(state) };
       tempState.loggedIn = false;
       return tempState;
     },
-    createAccount: (state, action) => (state.existingUser = false),
+    createAccount: (state, action) => {
+      state.existingUser = false;
+    },
     accountCreated: (state, action) => {
       state.loggedIn = true;
       state.existingUser = true;
