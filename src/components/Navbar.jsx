@@ -155,10 +155,9 @@ const Navbar = () => {
         tempUnseen += 1;
       }
     });
-    if (tempUnseen) {
-      setUnseen(tempUnseen);
-    }
-  }, [user.notifications]);
+    console.log("Setting unseen to ==>", tempUnseen, user.notifications);
+    setUnseen(tempUnseen);
+  }, [user]);
 
   useEffect(() => {
     dispatch(setCurrent(productFinder(searchQuery, discover)));
@@ -199,6 +198,7 @@ const Navbar = () => {
           <IconButton
             onClick={async () => {
               setInSync(true);
+              dispatch(refetchUser());
               const loader = setTimeout(() => {
                 setInSync(false);
                 return () => {
@@ -232,7 +232,6 @@ const Navbar = () => {
                     Authorization: `Bearer ${token}`,
                   },
                 });
-                dispatch(refetchUser);
                 dispatch(
                   setSpecifiedList({
                     recommandors,

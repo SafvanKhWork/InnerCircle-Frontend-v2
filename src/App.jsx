@@ -108,7 +108,10 @@ const App = () => {
               <Route path="/discover" element={<Feed discover />} />
               <Route path="/profile/:id" element={<div></div>} />
               <Route path="/profile" element={<div></div>} />
-              <Route path="/" element={<Feed />} />
+              <Route
+                path="/"
+                element={loggedIn ? <Feed /> : <div>PENDING</div>}
+              />
               <Route path="*" element={<Notfound is404 />} />
             </Routes>
           </Grid>

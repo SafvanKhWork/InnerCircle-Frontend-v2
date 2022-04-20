@@ -17,10 +17,12 @@ import { Stack } from "@mui/material";
 import userEvent from "@testing-library/user-event";
 import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../store/User/userSlice";
 import { setCurrent } from "../store/Products/productListSlice";
 import { getUser } from "../store/User/userSlice";
 import Friends from "./Friends";
+import { logout as signout } from "../store/ApplicationStates/applicationStateSlice";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -71,6 +73,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Leftbar = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
   const dispatch = useDispatch();
   const user = useSelector(getUser);
@@ -140,7 +143,14 @@ const Leftbar = () => {
           <Typography className={classes.text}>Discover</Typography>
         </div>
       </Link>
-      <div className={classes.item}>
+      <div
+        onClick={() => {
+          navigate("/");
+          dispatch(signout());
+          dispatch(logout());
+        }}
+        className={classes.item}
+      >
         <ExitToApp className={classes.icon} />
         <Typography className={classes.text}>Logout</Typography>
       </div>

@@ -8,14 +8,12 @@ import { setLoading } from "../ApplicationStates/applicationStateSlice";
 export const refetchUser = createAsyncThunk(
   "user/refetchUser",
   async (args, thunkAPI) => {
-    thunkAPI.dispatch(setLoading(true));
     const state = thunkAPI.getState();
     const response = await axios.get(`${url}/user/me`, {
       headers: {
         Authorization: `Bearer ${state.user.token}`,
       },
     });
-    thunkAPI.dispatch(setLoading(false));
     if (response.data) {
       thunkAPI.dispatch(refreshUser(response.data));
     }
@@ -48,7 +46,6 @@ const userSlice = createSlice({
         .split('"')[1];
     },
     refreshUser: (state, { payload }) => {
-      //Always runs at init
       try {
         if (payload) {
           state._id = payload._id;
@@ -67,72 +64,6 @@ const userSlice = createSlice({
         console.log(error.message);
       }
     },
-    // sendFriendRequest: async (state, { payload }) => {
-    //   try {
-    //     const { data } = await axios.post(
-    //       `${url}/add-friend/${payload}`,
-    //       authHeader
-    //     );
-    //     state.friendRequest = data ? data : state.friendRequest;
-    //   } catch (error) {
-    //     console.log(error.message);
-    //   }
-    // },
-    // acceptFriendRequest: async (state, { payload }) => {
-    //   try {
-    //     const { data } = await axios.patch(
-    //       `${url}/accept-friend-request/${payload}`,
-    //       authHeader
-    //     );
-    //     state.circle = data ? data : state.circle;
-    //   } catch (error) {
-    //     console.log(error.message);
-    //   }
-    // },
-    // unfriendUser: async (state, { payload }) => {
-    //   try {
-    //     const { data } = await axios.delete(
-    //       `${url}/unfriend/${payload}`,
-    //       authHeader
-    //     );
-    //     state.circle = data ? data : state.circle;
-    //   } catch (error) {
-    //     console.log(error.message);
-    //   }
-    // },
-    // rejectFriendRequest: async (state, { payload }) => {
-    //   try {
-    //     const { data } = await axios.delete(
-    //       `${url}/reject-friend-request/${payload}`,
-    //       authHeader
-    //     );
-    //     state.friendRequest = data ? data : state.friendRequest;
-    //   } catch (error) {
-    //     console.log(error.message);
-    //   }
-    // },
-    // updateAccountDetail: async (state, { payload }) => {
-    //   try {
-    //     const { data } = await axios.patch(
-    //       `${url}/users/me`,
-    //       payload,
-    //       authHeader
-    //     );
-    //     Object.keys(payload).forEach((field) => {
-    //       state[field] = payload[field];
-    //     });
-    //   } catch (error) {
-    //     console.log(error.message);
-    //   }
-    // },
-    // refreshHistory: async (state, { payload }) => {
-    //   try {
-    //     const { data } = await axios.get(`${url}/account/history`);
-    //     state.history = data ? data : state.history;
-    //   } catch (error) {
-    //     console.log(error.message);
-    //   }
-    // },
     refreshUserField: (state, { payload }) => {
       Object.keys(payload).forEach((field) => {
         state[field] = payload[field];
@@ -140,11 +71,6 @@ const userSlice = createSlice({
     },
     logout: (state, { payload }) => {
       try {
-        // if (state.token !== "") {
-        //   axios.post(`${url}/user/logout`, "data", {
-        //     headers: { Authorization: `Bearer ${state.token}` },
-        //   });
-        // }
         state.token = "";
         window.localStorage.setItem("inner-circle-token", "");
       } catch (error) {
