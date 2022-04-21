@@ -26,6 +26,7 @@ import { refetchUser } from "./store/User/userSlice";
 import { login } from "./store/ApplicationStates/applicationStateSlice";
 import Landing from "./components/Landing";
 import Redirect from "./components/Redirect";
+import Profile from "./components/Profile";
 
 const useStyles = makeStyles((theme) => ({
   right: {
@@ -54,7 +55,7 @@ const App = () => {
         dispatch(refreshUser(data));
       }
     })();
-  }, []);
+  }, [token]);
 
   useEffect(async () => {
     if (token && token !== "") {
@@ -124,8 +125,8 @@ const App = () => {
                   <Route path="/catagories/:catagory" element={<Feed />} />
                   <Route path="/feed" element={<Feed feed />} />
                   <Route path="/discover" element={<Feed discover />} />
-                  <Route path="/profile/:id" element={<div></div>} />
-                  <Route path="/profile" element={<div></div>} />
+                  <Route path="/profile/:id" element={<Profile />} />
+                  <Route path="/profile" element={<Profile />} />
                   <Route path="/" element={<Feed />} />
                   <Route path="*" element={<Notfound is404 />} />
                 </Routes>

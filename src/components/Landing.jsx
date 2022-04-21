@@ -2,6 +2,7 @@ import {
   alpha,
   AppBar,
   Box,
+  Button,
   Container,
   Grid,
   Icon,
@@ -9,20 +10,33 @@ import {
   makeStyles,
   Paper,
   Toolbar,
-  Typography,
 } from "@material-ui/core";
+import { TextField, Typography } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import { Divider, Stack } from "@mui/material";
 import React, { useState } from "react";
 import Carousel from "react-material-ui-carousel";
 import traditionalMarket from "../assets/4331336.jpg";
 import happyFamily from "../assets/5865.jpg";
+import queriesComment from "../assets/2469966.jpg";
+import interestedBuyer from "../assets/4706264 (copy).jpg";
+import detailedInfo from "../assets/5100169 (copy).jpg";
+import barterMobile from "../assets/mobileList.webp";
 import { DialogAuth } from "react-mui-auth-page";
 import axios from "axios";
 import { url } from "../config";
 import { useDispatch } from "react-redux";
 import { login } from "../store/ApplicationStates/applicationStateSlice";
 import { refreshUserField } from "../store/User/userSlice";
+import {
+  Email,
+  Facebook,
+  Instagram,
+  LinkedIn,
+  Phone,
+  Reddit,
+  Twitter,
+} from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   rotateIcon: {
@@ -107,8 +121,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Landing() {
   const dispatch = useDispatch();
+  const phone = "+910000000000";
+  const email = "adminuser@dev.io";
+  const facebook = "@adminuser";
+  const instagram = "@adminuser";
+  const reddit = "u/adminuser";
+  const twitter = "@adminuser";
+  const linkedIn = "@adminuser";
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [feedbackFocus, setFeedbackFocus] = useState(false);
+  const [feedback, setFeedback] = useState("");
+
   const handleSignIn = async ({ email, password }) => {
     try {
       const response = await axios.post(`${url}/user/login`, {
@@ -134,18 +158,7 @@ export default function Landing() {
       const { data } = await axios.post(`${url}/user/register`, {
         email,
         name,
-        password,
-        username: name.split(" ").join("") + String(Date.now()),
       });
-      if (data) {
-        window.localStorage.setItem(
-          "inner-circle-token",
-          JSON.stringify(data.token)
-        );
-        dispatch(refreshUserField({ token: data.token }));
-        dispatch(login());
-        return data;
-      }
     } catch (error) {
       console.log(`Provided Email Address or Password is Invalid`);
     }
@@ -253,8 +266,8 @@ export default function Landing() {
             </Box>
           </Grid>
           <Divider variant="fullWidth" orientation="horizontal" />
-          <Grid className={classes.sideImage} item lg={12}>
-            <Box px={25} pb={15}>
+          <Grid item lg={12}>
+            <Box px={1} pb={10}>
               <Stack direction={"column"} spacing={0.5}>
                 <Typography align="center" variant="h4">
                   Get your products in front of interested buyers.
@@ -269,45 +282,338 @@ export default function Landing() {
             </Box>
           </Grid>
           <Divider orientation="horizontal" />
-          <Grid className={classes.sideImage} item lg={3}>
-            <Box minHeight={300}>
-              <Stack direction={"column"} spacing={0.5}>
-                <Typography align="center" variant="h5">
-                  Get your products in front of interested buyers.
-                </Typography>
-              </Stack>
-            </Box>
+          <Grid item lg={3}>
+            <Paper variant="outlined">
+              <Box p={1} maxHeight={400} minHeight={400}>
+                <Stack direction={"column"} spacing={2}>
+                  <img src={interestedBuyer} height="300px" />
+                  <Typography
+                    color="textPrimary"
+                    align="center"
+                    variant="subtitle1"
+                  >
+                    Get your products in front of interested buyers.
+                  </Typography>
+                </Stack>
+              </Box>
+            </Paper>
           </Grid>
-          <Grid className={classes.sideImage} item lg={3}>
-            <Box minHeight={300}>
-              <Stack direction={"column"} spacing={0.5}>
-                <Typography align="center" variant="h5">
-                  Provide fast answers of queries with real-time comments.
-                </Typography>
-              </Stack>
-            </Box>
+          <Grid item lg={3}>
+            <Paper variant="outlined">
+              <Box p={1} maxHeight={400} minHeight={400}>
+                <Stack direction={"column"} spacing={2}>
+                  <img src={queriesComment} height="300px" />
+                  <Typography
+                    color="textPrimary"
+                    align="center"
+                    variant="subtitle1"
+                  >
+                    Provide fast answers of queries with comments.
+                  </Typography>
+                </Stack>
+              </Box>
+            </Paper>
           </Grid>
-          <Grid className={classes.sideImage} item lg={3}>
-            <Box minHeight={300}>
-              <Stack direction={"column"} spacing={0.5}>
-                <Typography align="center" variant="h5">
-                  Deliver useful information such as price and product
-                  description.
-                </Typography>
-              </Stack>
-            </Box>
+          <Grid item lg={3}>
+            <Paper variant="outlined">
+              <Box p={1} maxHeight={400} minHeight={400}>
+                <Stack direction={"column"} spacing={2}>
+                  <img src={detailedInfo} height="300px" />
+                  <Typography
+                    color="textPrimary"
+                    align="center"
+                    variant="subtitle1"
+                  >
+                    Deliver useful information such as price and product
+                    description.
+                  </Typography>
+                </Stack>
+              </Box>
+            </Paper>
           </Grid>
-          <Grid className={classes.sideImage} item lg={3}>
-            <Box minHeight={300}>
-              <Stack direction={"column"} spacing={0.5}>
-                <Typography align="center" variant="h5">
-                  Target buyers on the go with mobile-friendly listings.
-                </Typography>
-              </Stack>
-            </Box>
+          <Grid item lg={3}>
+            <Paper variant="outlined">
+              <Box p={1} maxHeight={400} minHeight={400}>
+                <Stack direction={"column"} spacing={2}>
+                  <img src={barterMobile} height="300px" />
+                  <Typography
+                    color="textPrimary"
+                    align="center"
+                    variant="subtitle1"
+                  >
+                    Target buyers on the go with mobile-friendly listings.
+                  </Typography>
+                </Stack>
+              </Box>
+            </Paper>
+          </Grid>
+          <Grid item lg={12}>
+            <Box style={{ paddingTop: "10%" }} minHeight={1}></Box>
           </Grid>
         </Grid>
       </Container>
+      <Box style={{ backgroundColor: "#202647" }} minHeight={350}>
+        <Box p={3}>
+          <Grid
+            // style={{ display: "flex", justifyContent: "center" }}
+            spacing={1}
+            container
+          >
+            <Grid item lg={6}>
+              <Box style={{ paddingRight: "15%" }}>
+                <Stack direction={"column"} spacing={1}>
+                  <Typography
+                    style={{ color: "white" }}
+                    align="left"
+                    variant="subtitle1"
+                    fontWeight={"bold"}
+                  >
+                    {`About Us.`}
+                  </Typography>
+                  <Divider
+                    sx={{ backgroundColor: "white" }}
+                    orientation="horizontal"
+                  />
+
+                  <Typography
+                    style={{ color: "white" }}
+                    align="left"
+                    variant="caption"
+                  >
+                    Contrary to popular belief, Lorem Ipsum is not simply random
+                    text. It has roots in a piece of classical Latin literature
+                    from 45 BC, making it over 2000 years old. Richard
+                    McClintock, a Latin professor at Hampden-Sydney College in
+                    Virginia, looked up one of the more obscure Latin words,
+                    consectetur, from a Lorem Ipsum passage, and going through
+                    the cites of the word in classical literature, discovered
+                    the undoubtable source. Lorem Ipsum comes from sections
+                    1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The
+                    Extremes of Good and Evil) by Cicero, written in 45 BC. This
+                    book is a treatise on the theory of ethics, very popular
+                    during the Renaissance. The first line of Lorem Ipsum,
+                    "Lorem ipsum dolor sit amet..", comes from a line in section
+                    1.10.32.
+                  </Typography>
+                </Stack>
+              </Box>
+            </Grid>
+            <Grid item lg={6}>
+              <Stack direction={"column"} spacing={1}>
+                <Typography
+                  style={{
+                    color: "white",
+                    verticalAlign: "middle",
+                    display: "flex",
+                  }}
+                  variant="subtitle1"
+                  fontWeight={"bold"}
+                >
+                  {`Contact Us:`}
+                </Typography>
+                <Divider
+                  sx={{ backgroundColor: "white" }}
+                  orientation="horizontal"
+                />
+                <Stack direction={"row"} spacing={1}>
+                  <Phone
+                    fontSize={"small"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                  />
+                  <Typography
+                    align={"left"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                    variant="caption"
+                  >
+                    {phone}
+                  </Typography>
+                </Stack>
+                <Stack direction={"row"} spacing={1}>
+                  <Email
+                    fontSize={"small"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                  />
+                  <Typography
+                    align={"left"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                    variant="caption"
+                  >
+                    {email}
+                  </Typography>
+                </Stack>
+
+                <Stack direction={"row"} spacing={1}>
+                  <Twitter
+                    fontSize={"small"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                  />
+                  <Typography
+                    align={"left"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                    variant="caption"
+                  >
+                    {twitter}
+                  </Typography>
+                </Stack>
+
+                <Stack direction={"row"} spacing={1}>
+                  <Facebook
+                    fontSize={"small"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                  />
+                  <Typography
+                    align={"left"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                    variant="caption"
+                  >
+                    {facebook}
+                  </Typography>
+                </Stack>
+
+                <Stack direction={"row"} spacing={1}>
+                  <LinkedIn
+                    fontSize={"small"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                  />
+                  <Typography
+                    align={"left"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                    variant="caption"
+                  >
+                    {linkedIn}
+                  </Typography>
+                </Stack>
+
+                <Stack direction={"row"} spacing={1}>
+                  <Instagram
+                    fontSize={"small"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                  />
+                  <Typography
+                    align={"left"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                    variant="caption"
+                  >
+                    {instagram}
+                  </Typography>
+                </Stack>
+                <Stack direction={"row"} spacing={1}>
+                  <Reddit
+                    fontSize={"small"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                  />
+                  <Typography
+                    align={"left"}
+                    style={{
+                      color: "white",
+                      verticalAlign: "middle",
+                      display: "flex",
+                    }}
+                    variant="caption"
+                  >
+                    {reddit}
+                  </Typography>
+                </Stack>
+              </Stack>
+            </Grid>
+            <Grid item lg={4}>
+              <Stack
+                display={"flex"}
+                justifyContent={"space-evenly"}
+                direction={"row"}
+                spacing={1}
+              >
+                <TextField
+                  multiline
+                  color=""
+                  onChange={(event) => {
+                    setFeedback(event.target.value);
+                  }}
+                  style={{ backgroundColor: "#dbdeff", borderRadius: "0.2em" }}
+                  fullWidth
+                  value={feedback}
+                  size="small"
+                  maxRows={3}
+                  onFocus={(event) => {
+                    setFeedbackFocus(true);
+                  }}
+                  label={feedbackFocus ? "" : "feedback"}
+                  autoComplete={false}
+                />
+                <Button
+                  onClick={(event) => {
+                    try {
+                      const { data } = axios.post(`${url}/feedback/new`, {
+                        feedback,
+                      });
+                      setFeedback("");
+                      setFeedbackFocus(false);
+                    } catch (error) {
+                      console.error(error.message);
+                    }
+                  }}
+                  variant="contained"
+                  color="secondary"
+                >
+                  submit
+                </Button>
+              </Stack>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
     </div>
   );
 }
