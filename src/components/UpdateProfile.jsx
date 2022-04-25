@@ -36,7 +36,6 @@ import {
   Typography,
 } from "@mui/material";
 import UserMinibar from "./Details/Single Items/UserMinibar";
-import { set } from "@reduxjs/toolkit/node_modules/immer/dist/internal";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -90,7 +89,15 @@ const UpdateProfile = (props) => {
     };
   };
 
-  console.log({ name, password, avatar, username });
+  const info =
+    password.trim() === ""
+      ? {
+          avatar,
+          name,
+          username,
+        }
+      : { name, password, avatar, username };
+  console.log(info);
   return (
     <>
       <Tooltip title="Edit" aria-label="edit" onClick={() => setOpen(true)}>
@@ -205,27 +212,17 @@ const UpdateProfile = (props) => {
                     onClick={async () => {
                       const data = axios.patch(
                         `${url}/users/me`,
-                        password
-                          ? {
-                              avatar,
-                              name,
-                              username,
-                            }
-                          : {
-                              avatar,
-                              name,
-                              username,
-                              password,
-                            },
+                        info,
                         getAuthHeader(token)
                       );
+                      console.log(data);
                       if (data) {
-                        //     // dispatch(refetchUser());
-                        //     setName(account.name);
-                        //     setUsername(account.username);
-                        //     setPassword("");
-                        //     setAvatar(account.avatar);
-                        //     setOpen(false);
+                        dispatch(refetchUser());
+                        setName(account.name);
+                        setUsername(account.username);
+                        setPassword("");
+                        setAvatar(account.avatar);
+                        setOpen(false);
                       }
                     }}
                   >

@@ -182,13 +182,16 @@ export default function Landing() {
           <Typography variant="h5" className={classes.logoSm}>
             InnerCircle
           </Typography>
-          <IconButton
+          <Button
+            variant="contained"
+            color="secondary"
+            style={{ color: "white" }}
             onClick={() => {
               setOpen(true);
             }}
           >
-            <LoginIcon sx={{ color: "white" }} className={classes.icons} />
-          </IconButton>
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
       <DialogAuth
