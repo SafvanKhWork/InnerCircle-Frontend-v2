@@ -41,6 +41,7 @@ import Bids from "./Details/Bids/Bids";
 import NewBid from "./Details/Bids/NewBid";
 import SearchBar from "./Details/Search/Search";
 import axios from "axios";
+import Confirm from "./Confirm";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -77,6 +78,8 @@ const Post = ({ imgs, title, description, product }) => {
   const [likes, setLikes] = useState(product.likes);
   const [liked, setLiked] = useState(product.like.includes(user._id) || false);
   const [isFocused, setIsFocused] = useState(false);
+  const [inFocus, setInFocus] = useState(false);
+  const [confirm, setConfirm] = useState(false);
 
   //Handlers
 
@@ -116,16 +119,34 @@ const Post = ({ imgs, title, description, product }) => {
   return (
     <Card variant="elevation" elevation={4} className={classes.card}>
       <CardActionArea>
-        <CardHeader
-          avatar={<Avatar src={product.owner.avatar} aria-label="recipe" />}
-          title={`${product.owner.username}`}
-          subheader={
-            product.new ||
-            `${formatDistance(new Date(product.createdAt), new Date(), {
-              addSuffix: true,
-            })}`
-          }
-        />
+        <div
+          onMouseEnter={() => {
+            setInFocus(true);
+          }}
+          onMouseLeave={() => {
+            setInFocus(false);
+          }}
+        >
+          <CardHeader
+            avatar={<Avatar src={product.owner.avatar} aria-label="recipe" />}
+            title={`${product.owner.username}`}
+            subheader={
+              product.new ||
+              `${formatDistance(new Date(product.createdAt), new Date(), {
+                addSuffix: true,
+              })}`
+            }
+            action={
+              String(user._id) === String(product.owner._id) && inFocus ? (
+                <Confirm message={"Are you sure you want to delete this post"}>
+                  <MoreVert />
+                </Confirm>
+              ) : (
+                ""
+              )
+            }
+          />
+        </div>
         <div
           onMouseEnter={() => setIsFocused(true)}
           onMouseLeave={() => setIsFocused(false)}

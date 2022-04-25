@@ -40,7 +40,7 @@ const App = () => {
   const token = useSelector(getToken);
   const dispatch = useDispatch();
   const { loggedIn } = useSelector((state) => state.applicationState);
-  console.log(loggedIn, token);
+  // console.log(loggedIn, token);
   if (token && token !== "" && !loggedIn) {
     dispatch(login());
   }
@@ -125,8 +125,11 @@ const App = () => {
                   <Route path="/catagories/:catagory" element={<Feed />} />
                   <Route path="/feed" element={<Feed feed />} />
                   <Route path="/discover" element={<Feed discover />} />
-                  <Route path="/profile/:id" element={<Profile />} />
-                  <Route path="/profile" element={<Profile />} />
+                  <Route
+                    path="/profile/:id"
+                    element={<Profile profile={false} />}
+                  />
+                  <Route path="/profile" element={<Profile profile />} />
                   <Route path="/" element={<Feed />} />
                   <Route path="*" element={<Notfound is404 />} />
                 </Routes>

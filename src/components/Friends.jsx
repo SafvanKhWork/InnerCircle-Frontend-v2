@@ -178,7 +178,7 @@ const Friends = (props) => {
               <Box m={1}>
                 {!search || query === "" ? (
                   <Stack spacing={1}>
-                    {account.friendRequest !== 0 ? (
+                    {account.friendRequest.length > 0 ? (
                       <Fragment>
                         <Typography color={"GrayText"} fontWeight={"bold"}>
                           Friend Requests

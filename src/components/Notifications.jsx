@@ -1,32 +1,7 @@
-import {
-  Container,
-  Fab,
-  FormControlLabel,
-  FormLabel,
-  Input,
-  makeStyles,
-  MenuItem,
-  Modal,
-  Radio,
-  RadioGroup,
-  Snackbar,
-  TextField,
-  Tooltip,
-  Box,
-  ImageList,
-  ImageListItem,
-  Badge,
-} from "@material-ui/core";
-import { Alert, Button, IconButton } from "@mui/material";
-import {
-  Add as AddIcon,
-  Cancel,
-  Close,
-  FiberManualRecord,
-  Notifications as Notification,
-} from "@material-ui/icons";
+import { Container, makeStyles, Modal, Tooltip, Box } from "@material-ui/core";
+
+import { Notifications as Notification } from "@material-ui/icons";
 import { Fragment, useEffect, useState } from "react";
-import MuiAlert from "@material-ui/lab/Alert";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "react-material-ui-carousel";
 import axios from "axios";

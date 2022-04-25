@@ -106,7 +106,7 @@ const UserMinibar = (props) => {
           >
             <Link
               style={{ color: "inherit", textDecoration: "none" }}
-              to={`/profile/${user?.username}`}
+              to={`/profile/${user?._id}`}
             >
               <Box
                 style={{
