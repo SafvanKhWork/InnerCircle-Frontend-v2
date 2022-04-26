@@ -102,7 +102,6 @@ const UpdateProfile = (props) => {
           username,
         }
       : { name, password, avatar, username };
-  console.log(info);
   return (
     <>
       <Tooltip title="Edit" aria-label="edit" onClick={() => setOpen(true)}>
