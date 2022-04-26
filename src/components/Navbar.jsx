@@ -31,6 +31,7 @@ import {
 import { getUser, refetchUser } from "../store/User/userSlice";
 import AccountSettings from "./Details/Header/HeadItems/AccountSettings";
 import Notifications from "./Notifications";
+import { Link } from "react-router-dom";
 
 // const useStyles = makeStyles(() =>
 //   createStyles({
@@ -165,12 +166,14 @@ const Navbar = () => {
   return (
     <AppBar position="fixed">
       <Toolbar className={classes.toolbar}>
-        <Typography variant="h6" className={classes.logoLg}>
-          Inner Circle
-        </Typography>
-        <Typography variant="h6" className={classes.logoSm}>
-          InnerCircle
-        </Typography>
+        <Link style={{ color: "inherit", textDecoration: "none" }} to={"/"}>
+          <Typography variant="h6" className={classes.logoLg}>
+            Inner Circle
+          </Typography>
+          <Typography variant="h6" className={classes.logoSm}>
+            InnerCircle
+          </Typography>
+        </Link>
         <div className={classes.search}>
           <Box
             p={1}
@@ -259,9 +262,14 @@ const Navbar = () => {
               <Notification />
             </Notifications>
           </Badge>
-          <Tooltip title={user.name}>
-            <Avatar alt={user.name} src={user.avatar} />
-          </Tooltip>
+          <Link
+            style={{ color: "inherit", textDecoration: "none" }}
+            to={"/profile"}
+          >
+            <Tooltip title={user.name}>
+              <Avatar alt={user.name} src={user.avatar} />
+            </Tooltip>
+          </Link>
         </div>
       </Toolbar>
     </AppBar>

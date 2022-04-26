@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Stack } from "@mui/material";
+import { ar } from "date-fns/locale";
 import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,8 +19,8 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     borderRadius: "5px",
-    width: 500,
-    height: 115,
+    width: 450,
+    height: 150,
     backgroundColor: "white",
     position: "absolute",
     top: 0,
@@ -55,12 +56,7 @@ export default function Confirm(props) {
       >
         {props.children}
       </Tooltip>
-      <Modal
-        onClose={() => {
-          setOpen(false);
-        }}
-        open={open}
-      >
+      <Modal open={open}>
         <Container className={classes.container}>
           <Stack p={1} spacing={4}>
             <Typography variant="h6">{message}</Typography>
@@ -78,7 +74,12 @@ export default function Confirm(props) {
                 Confirm
               </Button>
               <Button
-                onClick={handleCancal}
+                onClick={(...args) => {
+                  if (handleCancal) {
+                    handleCancal(args);
+                  }
+                  setOpen(false);
+                }}
                 variant="text"
                 color="inherit"
                 style={{ color: "red" }}

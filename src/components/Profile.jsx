@@ -274,7 +274,7 @@ export default function Profile(props) {
         </Card>
       </Box>
       <TabPanel value={value} index={0}>
-        <Box p={1}>
+        <Box>
           {products?.map((product) => (
             <Post
               product={product}

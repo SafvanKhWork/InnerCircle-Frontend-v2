@@ -58,6 +58,11 @@ export default function SearchBox(props) {
   });
   return (
     <Box p={1}>
+      <SearchBar
+        pb={2}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+      />
       <Scrollbars
         style={{ height: 200 }}
         autoHide
@@ -66,11 +71,6 @@ export default function SearchBox(props) {
       >
         {results}
       </Scrollbars>
-      <SearchBar
-        pb={2}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-      />
     </Box>
   );
 }

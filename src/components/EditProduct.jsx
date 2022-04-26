@@ -1,45 +1,56 @@
 import {
-  Button,
   Container,
-  Fab,
-  FormControlLabel,
-  FormLabel,
-  Input,
   makeStyles,
-  MenuItem,
   Modal,
-  Radio,
-  RadioGroup,
-  Snackbar,
-  TextField,
   Tooltip,
   Box,
-  ImageList,
-  ImageListItem,
+  Button,
+  TextField,
+  MenuItem,
+  Input,
+  IconButton,
 } from "@material-ui/core";
-import { Add as AddIcon } from "@material-ui/icons";
-import { useEffect, useState } from "react";
-import MuiAlert from "@material-ui/lab/Alert";
+
+import { Notifications as Notification } from "@material-ui/icons";
+import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Carousel from "react-material-ui-carousel";
 import axios from "axios";
+import Confirm from "./Confirm";
 import { url, getAuthHeader } from "../config";
 
 import { Scrollbars } from "react-custom-scrollbars";
-import { getToken, refetchUser } from "../store/User/userSlice";
 import {
-  setCurrent,
-  setSpecifiedList,
-} from "../store/Products/productListSlice";
+  getToken,
+  refetchUser,
+  refreshUserField,
+} from "../store/User/userSlice";
+import { setSpecifiedList } from "../store/Products/productListSlice";
+import {
+  Alert,
+  Avatar,
+  Checkbox,
+  Collapse,
+  Divider,
+  Fab,
+  FormControlLabel,
+  ImageList,
+  ImageListItem,
+  Snackbar,
+  Stack,
+  Switch,
+  Typography,
+} from "@mui/material";
+import UserMinibar from "./Details/Single Items/UserMinibar";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
     position: "fixed",
     bottom: 20,
     right: 20,
-    zIndex: 1,
   },
   container: {
+    borderRadius: "5px",
     width: 500,
     height: 550,
     backgroundColor: "white",
@@ -62,25 +73,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
-}
-
-const Add = () => {
-  const token = useSelector(getToken);
-  const catagories = useSelector((state) => state.products.catagories);
+const EditProduct = (props) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [selectedCatagory, setSelectedCatagory] = useState("");
+  const product = props.product;
+  const account = useSelector((state) => state.user);
+  const { token } = account;
+  const [name, setName] = useState(product.name);
+  const [description, setDescription] = useState(product.description);
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-  const [files, setFiles] = useState([]);
-  const [previewSource, setPreviewSource] = useState([]);
-  const [price, setPrice] = useState(0);
-
-  const dispatch = useDispatch();
-  const discover = useSelector((state) => state.products.discover);
+  const [files, setFiles] = useState(product.images);
+  const [previewSource, setPreviewSource] = useState(product.images);
+  const [price, setPrice] = useState(Number(product.price));
+  const [deleteColor, setDeleteColor] = useState("#f53f38");
   const previewFile = (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -91,8 +97,8 @@ const Add = () => {
 
   const addProduct = async (productInfo) => {
     try {
-      const response = await axios.post(
-        `${url}/product/new`,
+      const response = await axios.patch(
+        `${url}/products/${product._id}`,
         productInfo,
         getAuthHeader(token)
       );
@@ -101,28 +107,28 @@ const Add = () => {
       return { status: false, productId: undefined };
     }
   };
-  useEffect(() => {
-    return () => {
-      setPreviewSource([]);
-      setFiles([]);
-      setSelectedCatagory(undefined);
-      setPrice(0);
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     setPreviewSource([]);
+  //     setFiles([]);
+  //     setPrice(0);
+  //   };
+  // }, []);
   const previewImage = previewSource.map((img, i) => (
-    <div
-      key={img}
-      onClick={async (event) => {
-        const previews = previewSource.filter(
-          (image) => image !== event.target.src
-        );
-        const filez = files.filter((image) => image !== event.target.src);
-        setPreviewSource(previews);
-        setFiles(filez);
-      }}
-    >
-      <img style={{ height: 80 }} src={img} alt="chosen" />
-    </div>
+    <ImageListItem key={i + `${Math.random()}`}>
+      <div
+        onClick={async (event) => {
+          const previews = previewSource.filter(
+            (image) => image !== event.target.src
+          );
+          const filez = files.filter((image) => image !== event.target.src);
+          setPreviewSource(previews);
+          setFiles(filez);
+        }}
+      >
+        <img style={{ height: 80 }} src={img} alt="chosen" />
+      </div>
+    </ImageListItem>
   ));
 
   const handleFileInputChange = async (event) => {
@@ -152,18 +158,16 @@ const Add = () => {
     try {
       const {
         product: { _id: productId },
-        product,
       } = await addProduct(newProduct, token);
-
       if (productId) {
-        setOpenAlert(true);
-        setPreviewSource([]);
-        setDescription("");
-        setFiles([]);
-        setSelectedCatagory("");
-        setPrice(0);
-        setName("");
+        setPreviewSource(product.images);
+        setDescription(product.description);
+        setFiles(product.images);
+        setPrice(Number(product.price));
+        setName(product.name);
+        setDeleteColor("#f53f38");
         setOpen(false);
+        setOpenAlert(true);
       }
       if (productId) {
         try {
@@ -206,22 +210,14 @@ const Add = () => {
       }
     } catch (error) {}
   };
-  const newProduct = {
-    description,
-    name,
-    price,
-    catagory: selectedCatagory,
-    images: files,
-  };
+  const newProduct = { description, name, price, images: files };
 
   return (
     <>
       <Tooltip title="Add" aria-label="add" onClick={() => setOpen(true)}>
-        <Fab color="primary" className={classes.fab}>
-          <AddIcon />
-        </Fab>
+        {props.children}
       </Tooltip>
-      <Modal open={open}>
+      <Modal onClose={() => setOpen(false)} open={open}>
         <Container className={classes.container}>
           <Box py={2}>
             <Scrollbars
@@ -277,23 +273,6 @@ const Add = () => {
                 </div>
                 <div className={classes.item}>
                   <TextField
-                    fullWidth
-                    select
-                    onChange={(event) => {
-                      setSelectedCatagory(event.target.value);
-                    }}
-                    value={selectedCatagory || "Select Catagory"}
-                    label="Catagory"
-                  >
-                    {catagories.map((catagory) => (
-                      <MenuItem key={catagory._id} value={catagory.name}>
-                        {catagory.name}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </div>
-                <div className={classes.item}>
-                  <TextField
                     id="standard-basic"
                     size="small"
                     style={{ width: "100%" }}
@@ -304,30 +283,64 @@ const Add = () => {
                   />
                 </div>
                 <div className={classes.item}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    style={{ marginRight: 20 }}
-                    onClick={handleCreate}
-                  >
-                    Create
-                  </Button>
+                  <Stack direction={"row"} spacing={1}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={handleCreate}
+                    >
+                      Update
+                    </Button>
 
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => {
-                      setPreviewSource([]);
-                      setDescription("");
-                      setFiles([]);
-                      setSelectedCatagory("");
-                      setPrice(0);
-                      setName("");
-                      setOpen(false);
-                    }}
-                  >
-                    Cancel
-                  </Button>
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => {
+                        setPreviewSource(product.images);
+                        setDescription(product.description);
+                        setFiles(product.images);
+                        setPrice(Number(product.price));
+                        setName(product.name);
+                        setDeleteColor("#f53f38");
+                        setOpen(false);
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Confirm
+                      message={`Are you sure you want to delete this product?`}
+                      onConfirm={async () => {
+                        const { data } = axios.delete(
+                          `${url}/products/${product._id}`,
+                          getAuthHeader(token)
+                        );
+                        try {
+                          const { data: discover } = await axios.get(
+                            `${url}/products`
+                          );
+                          dispatch(
+                            setSpecifiedList({
+                              current: discover,
+                              discover,
+                            })
+                          );
+                        } catch (error) {
+                          console.log({ ...error });
+                        }
+                        setOpen(false);
+                      }}
+                    >
+                      <Button
+                        variant="outlined"
+                        color="inherit"
+                        style={{ color: deleteColor }}
+                        onMouseEnter={() => setDeleteColor("#f70b02")}
+                        onMouseLeave={() => setDeleteColor("#f53f38")}
+                      >
+                        Delete
+                      </Button>
+                    </Confirm>
+                  </Stack>
                 </div>
               </form>
             </Scrollbars>
@@ -341,11 +354,11 @@ const Add = () => {
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
         <Alert onClose={handleClose} severity="success">
-          Product was successfully Added!
+          Changes were were successfully.
         </Alert>
       </Snackbar>
     </>
   );
 };
 
-export default Add;
+export default EditProduct;

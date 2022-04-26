@@ -51,10 +51,8 @@ const Feed = (props) => {
     if (!props.feed && !props.discover && !catagory) {
       if (feed.length === 0) {
         navigate("/discover");
-        // dispatch(setCurrent(discover));
       } else {
         navigate("/feed");
-        //dispatch(setCurrent(feed));
       }
     }
   }, [catagory, discover, props]);

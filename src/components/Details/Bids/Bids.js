@@ -30,6 +30,7 @@ const Bids = (props) => {
   const [bids, SetBids] = useState(props.bids);
   return (
     <Box m={1}>
+      <NewBid product={props.product} update={SetBids} />
       <Scrollbars
         style={{ height: 200 }}
         autoHide
@@ -52,7 +53,6 @@ const Bids = (props) => {
           </Stack>
         </Box>
       </Scrollbars>
-      <NewBid product={props.product} update={SetBids} />
     </Box>
   );
 };

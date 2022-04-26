@@ -18,12 +18,12 @@ const Comments = (props) => {
   };
   return (
     <Box p={1} justifyContent="center">
-      <CommentScroll comments={comments} />
       <NewComment
         update={updateComments}
         product={product}
-        mt={props.desk ? 2 : 0}
+        mb={props.desk ? 2 : 0}
       />
+      <CommentScroll comments={comments} />
     </Box>
   );
 };

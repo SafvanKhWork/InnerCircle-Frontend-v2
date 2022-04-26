@@ -21,6 +21,7 @@ import { url, getAuthHeader } from "../config";
 import { Scrollbars } from "react-custom-scrollbars";
 import {
   getToken,
+  logout,
   refetchUser,
   refreshUserField,
 } from "../store/User/userSlice";
@@ -36,6 +37,9 @@ import {
   Typography,
 } from "@mui/material";
 import UserMinibar from "./Details/Single Items/UserMinibar";
+import Confirm from "./Confirm";
+import { logout as signout } from "../store/ApplicationStates/applicationStateSlice";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -80,7 +84,8 @@ const UpdateProfile = (props) => {
   const [username, setUsername] = useState(account.username);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
+  const [deleteColor, setDeleteColor] = useState("#f53f38");
+  const navigate = useNavigate();
   const previewFile = (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -205,43 +210,69 @@ const UpdateProfile = (props) => {
                 </div>
 
                 <div className={classes.item}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    style={{ marginRight: 20 }}
-                    onClick={async () => {
-                      const data = axios.patch(
-                        `${url}/users/me`,
-                        info,
-                        getAuthHeader(token)
-                      );
-                      console.log(data);
-                      if (data) {
-                        dispatch(refetchUser());
+                  <Stack spacing={1} direction={"row"}>
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={async () => {
+                        const data = axios.patch(
+                          `${url}/users/me`,
+                          info,
+                          getAuthHeader(token)
+                        );
+                        console.log(data);
+                        if (data) {
+                          dispatch(refetchUser());
+                          setName(account.name);
+                          setUsername(account.username);
+                          setPassword("");
+                          setAvatar(account.avatar);
+                          setOpen(false);
+                          setDeleteColor("#f53f38");
+                        }
+                      }}
+                    >
+                      Update
+                    </Button>
+
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => {
                         setName(account.name);
                         setUsername(account.username);
                         setPassword("");
                         setAvatar(account.avatar);
+                        setDeleteColor("#f53f38");
                         setOpen(false);
-                      }
-                    }}
-                  >
-                    Update
-                  </Button>
-
-                  <Button
-                    variant="outlined"
-                    color="secondary"
-                    onClick={() => {
-                      setName(account.name);
-                      setUsername(account.username);
-                      setPassword("");
-                      setAvatar(account.avatar);
-                      setOpen(false);
-                    }}
-                  >
-                    Cancel
-                  </Button>
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Confirm
+                      message={`Are you sure you want to delete your account?`}
+                      onConfirm={async () => {
+                        const { data } = axios.delete(
+                          `${url}/users/me`,
+                          getAuthHeader(token)
+                        );
+                        setOpen(false);
+                        navigate("/");
+                        dispatch(signout());
+                        dispatch(logout());
+                      }}
+                    >
+                      <Button
+                        variant="outlined"
+                        color="inherit"
+                        style={{ color: deleteColor }}
+                        onMouseEnter={() => setDeleteColor("#f70b02")}
+                        onMouseLeave={() => setDeleteColor("#f53f38")}
+                      >
+                        Delete
+                      </Button>
+                    </Confirm>
+                  </Stack>
                 </div>
               </form>
             </Scrollbars>
