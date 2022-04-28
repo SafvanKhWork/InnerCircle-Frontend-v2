@@ -6,12 +6,16 @@ const initialState = {
   existingUser: true,
   verifiedEmail: false,
   forgotPassword: false,
+  email: "",
 };
 
 const applicationStateSlice = createSlice({
   name: "applicationState",
   initialState,
   reducers: {
+    setGlobalEmail: (state, { payload }) => {
+      state.email = payload;
+    },
     login: (state, action) => {
       state.loggedIn = true;
     },
@@ -22,15 +26,27 @@ const applicationStateSlice = createSlice({
       return tempState;
     },
     createAccount: (state, action) => {
-      state.existingUser = false;
+      const tempState = { ...current(state) };
+      // console.log(tempState);
+      tempState.existingUser = false;
+      return tempState;
     },
     accountCreated: (state, action) => {
-      state.loggedIn = true;
-      state.existingUser = true;
+      const tempState = { ...current(state) };
+      // console.log(tempState);
+      tempState.existingUser = true;
+      return tempState;
     },
-    hasAccount: (state, action) => (state.existingUser = false),
-    forgotPassword: (state, action) => (state.forgotPassword = true),
-    hasPassword: (state, action) => (state.forgotPassword = false),
+    // hasAccount: (state, action) => (state.existingUser = false),
+    forgotPassword: (state, action) => {
+      const tempState = { ...current(state) };
+      tempState.forgotPassword = true;
+      return tempState;
+    },
+    hasPassword: (state, action) => {
+      state.forgotPassword = false;
+    },
+    reset: (state, action) => initialState,
   },
 });
 
@@ -44,5 +60,7 @@ export const {
   forgotPassword,
   hasPassword,
   setLoading,
+  reset,
+  setGlobalEmail,
 } = applicationStateSlice.actions;
 export default applicationStateSlice.reducer;

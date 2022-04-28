@@ -37,6 +37,7 @@ import {
   Reddit,
   Twitter,
 } from "@material-ui/icons";
+import AuthModel from "./Auth/AuthModel";
 
 const useStyles = makeStyles((theme) => ({
   rotateIcon: {
@@ -129,7 +130,7 @@ export default function Landing() {
   const twitter = "@adminuser";
   const linkedIn = "@adminuser";
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+
   const [feedbackFocus, setFeedbackFocus] = useState(false);
   const [feedback, setFeedback] = useState("");
 
@@ -159,15 +160,14 @@ export default function Landing() {
         email,
         name,
       });
+      return data;
     } catch (error) {
       console.log(`Provided Email Address or Password is Invalid`);
     }
   };
-  const handleForget = ({ email }) => {
-    console.log({ email });
-  };
-  const handleClose = () => {
-    setOpen(false);
+  const handleForget = async ({ email }) => {
+    const { data } = await axios.post(`${url}/verify/email`, { email });
+    return data;
   };
 
   const handleSocial = {};
@@ -182,19 +182,22 @@ export default function Landing() {
           <Typography variant="h5" className={classes.logoSm}>
             InnerCircle
           </Typography>
-          <Button
-            variant="contained"
-            color="secondary"
-            style={{ color: "white" }}
-            onClick={() => {
-              setOpen(true);
-            }}
+          <AuthModel
+            onSignUp={handleSignUp}
+            onForget={handleForget}
+            onSignIn={handleSignIn}
           >
-            Login
-          </Button>
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{ color: "white" }}
+            >
+              Login
+            </Button>
+          </AuthModel>
         </Toolbar>
       </AppBar>
-      <DialogAuth
+      {/* <DialogAuth
         open={open}
         textFieldVariant="outlined"
         logoComponent={
@@ -212,7 +215,7 @@ export default function Landing() {
         handleForget={handleForget}
         handleSignIn={handleSignIn}
         handleSocial={handleSocial}
-      />
+      /> */}
       <Container className={classes.container}>
         <Grid
           style={{ display: "flex", justifyContent: "center" }}
@@ -593,7 +596,6 @@ export default function Landing() {
                     setFeedbackFocus(true);
                   }}
                   label={feedbackFocus ? "" : "feedback"}
-                  autoComplete={false}
                 />
                 <Button
                   onClick={(event) => {
