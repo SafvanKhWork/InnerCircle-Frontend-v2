@@ -27,6 +27,7 @@ import { login } from "./store/ApplicationStates/applicationStateSlice";
 import Landing from "./components/Landing";
 import Redirect from "./components/Redirect";
 import Profile from "./components/Profile";
+import Admin from "./components/Admin";
 
 const useStyles = makeStyles((theme) => ({
   right: {
@@ -37,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const App = () => {
-  const token = useSelector(getToken);
+  const { token, admin } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { loggedIn } = useSelector((state) => state.applicationState);
   // console.log(loggedIn, token);
@@ -128,6 +129,10 @@ const App = () => {
                   <Route
                     path="/profile/:id"
                     element={<Profile profile={false} />}
+                  />
+                  <Route
+                    path="/admin"
+                    element={admin ? <Admin /> : <Notfound is404 />}
                   />
                   <Route path="/profile" element={<Profile profile />} />
                   <Route path="/" element={<Feed />} />

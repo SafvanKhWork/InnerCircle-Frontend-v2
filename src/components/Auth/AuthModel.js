@@ -151,13 +151,27 @@ export default function BasicModal(props) {
 
             <TabPanel value={value} index={0}>
               {!forgotPasswd ? (
-                <SignIn onSignIn={onSignIn} />
+                <Scrollbars
+                  style={{ height: 340, width: 320 }}
+                  autoHide
+                  autoHideTimeout={0}
+                  autoHideDuration={200}
+                >
+                  <SignIn onSignIn={onSignIn} />
+                </Scrollbars>
               ) : (
                 <ForgotPassword onForget={onForget} />
               )}
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <SignUp onSignUp={onSignUp} />
+              <Scrollbars
+                style={{ height: 340, width: 320 }}
+                autoHide
+                autoHideTimeout={0}
+                autoHideDuration={200}
+              >
+                <SignUp onSignUp={onSignUp} />
+              </Scrollbars>
             </TabPanel>
           </Stack>
         </Container>

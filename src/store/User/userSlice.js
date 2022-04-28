@@ -59,6 +59,7 @@ const userSlice = createSlice({
           state.history = payload.history;
           state.recommandation = payload.recommandation;
           state.notifications = payload.notifications;
+          state.admin = payload.admin;
         }
       } catch (error) {
         console.log(error.message);

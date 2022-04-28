@@ -48,11 +48,11 @@ const ForgotPassword = (props) => {
 
   return (
     <Fragment>
-      <Grid container spacing={1}>
+      <Grid container display={"flex"} justifyContent={"center"} spacing={1}>
         <Grid item lg={12}>
           <TextField
+            fullWidth={true}
             required
-            fullWidth
             color={validator.isEmail(email) ? "primary" : "error"}
             value={email}
             onChange={(event) => setEmail(event.target.value)}
@@ -63,7 +63,7 @@ const ForgotPassword = (props) => {
         </Grid>
         <Grid item lg={12}>
           <Button
-            fullWidth
+            fullWidth={true}
             onClick={async () => {
               await axios.post(`${url}/verify/email`, { email });
               setIsSent(true);

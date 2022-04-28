@@ -31,7 +31,7 @@ import {
 import { getUser, refetchUser } from "../store/User/userSlice";
 import AccountSettings from "./Details/Header/HeadItems/AccountSettings";
 import Notifications from "./Notifications";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 // const useStyles = makeStyles(() =>
 //   createStyles({
@@ -115,6 +115,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const user = useSelector(getUser);
   const { token } = user;
   const dispatch = useDispatch();
@@ -186,6 +187,7 @@ const Navbar = () => {
           <InputBase
             value={searchQuery}
             onChange={(event) => {
+              navigate("/discover");
               setSearchQuery(event.target.value);
             }}
             className={classes.input}

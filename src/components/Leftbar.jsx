@@ -13,6 +13,7 @@ import {
   TabletMac,
   Explore,
 } from "@material-ui/icons";
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Stack } from "@mui/material";
 import userEvent from "@testing-library/user-event";
 import { Fragment } from "react";
@@ -80,6 +81,19 @@ const Leftbar = () => {
 
   return (
     <Container className={classes.container}>
+      {user.admin ? (
+        <Link
+          style={{ color: "inherit", textDecoration: "none" }}
+          to={"/admin"}
+        >
+          <div className={classes.item}>
+            <AdminPanelSettingsIcon className={classes.icon} />
+            <Typography className={classes.text}>Administrator</Typography>
+          </div>
+        </Link>
+      ) : (
+        ""
+      )}
       <Link
         style={{ color: "inherit", textDecoration: "none" }}
         to={"/profile"}
@@ -134,6 +148,7 @@ const Leftbar = () => {
           )}
         </Stack>
       </Friends>
+
       <Link
         style={{ color: "inherit", textDecoration: "none" }}
         to={"/discover"}
