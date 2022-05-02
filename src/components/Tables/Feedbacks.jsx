@@ -5,38 +5,101 @@ import { useDispatch, useSelector } from "react-redux";
 import { DataGrid } from "@mui/x-data-grid";
 
 import { getAuthHeader } from "../../config";
+import { Button, IconButton, Typography } from "@mui/material";
+import { set } from "date-fns";
+import { Visibility } from "@material-ui/icons";
+// import { Button } from "@mui/material";
 
-export default function Feedbacks() {
-  const [feedbacks, setFeedbacks] = useState([]);
-  const dispatch = useDispatch();
-  const { token } = useSelector((state) => state.user);
+function Delete({ id, setRug }) {
+  const token = useSelector((state) => state.user.token);
+  return (
+    <Button
+      size="small"
+      variant="text"
+      color="error"
+      onClick={async (event) => {
+        const { data } = await axios.delete(
+          `${url}/feedback/${id}`,
+          getAuthHeader(token)
+        );
+        if (data) {
+          setRug((prev) => !prev);
+        }
+      }}
+    >
+      Delete
+    </Button>
+  );
+}
+
+function Seen({ id, setRug, rug }) {
+  const token = useSelector((state) => state.user.token);
+  const [feedback, setFeedback] = useState({});
   useEffect(async () => {
-    const { data } = await axios.get(`${url}/feedbacks`, getAuthHeader(token));
+    const { data } = await axios.get(
+      `${url}/feedback/${id}`,
+      getAuthHeader(token)
+    );
     if (data) {
-      const refined = data.map((row, i) => {
-        return { ...row, id: i };
-      });
-      setFeedbacks(refined);
+      setFeedback(data);
     }
     return () => {};
-  }, []);
-  if (feedbacks.length === 0 || !feedbacks?.length) {
-  }
+  }, [rug]);
+
+  return (
+    <Button
+      size="small"
+      variant="text"
+      color={feedback.reviewed ? "primary" : "secondary"}
+      onClick={async (event) => {
+        const { data } = await axios.patch(
+          `${url}/feedbacks/${id}`,
+          undefined,
+          getAuthHeader(token)
+        );
+        if (data) {
+          setRug((prev) => !prev);
+        }
+      }}
+    >
+      {feedback.reviewed ? "reviewed" : "pending"}
+    </Button>
+  );
+}
+
+export default function Feedbacks({ feedbacks, rug, setRug }) {
+  const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.user);
+
   const columns = [
-    { field: "id", headerName: "id", width: 50 },
-    // { field: "_id", headerName: "database id", width: 130 },
-    { field: "feedback", headerName: "message", width: 280 },
-    { field: "reviewed", headerName: "seen", width: 70 },
+    { field: "id", headerName: "No.", width: 50 },
+    { field: "feedback", headerName: "Feedback", width: 500 },
+    {
+      field: "_id",
+      headerName: "Status",
+      width: 100,
+      renderCell: (params) => (
+        <Seen id={params.value} setRug={setRug} rug={rug} />
+      ),
+    },
+
+    {
+      field: "did",
+      headerName: "Delete",
+      width: 100,
+      renderCell: (params) => <Delete id={params.value} setRug={setRug} />,
+    },
   ];
   return (
     <div>
       <div style={{ height: 400, width: "100%" }}>
         <DataGrid
-          rows={feedbacks}
+          rows={feedbacks.map((item, i) => {
+            return { ...item, id: i + 1, did: item._id };
+          })}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5]}
-          checkboxSelection
         />
       </div>
     </div>

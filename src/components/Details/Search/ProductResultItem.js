@@ -29,7 +29,7 @@ const ResultItem = (props) => {
             {
               <Avatar
                 variant="square"
-                src={url + user.images[0]}
+                src={user.images[0]}
                 sx={{ width: 52, height: 34, borderRadius: "0.1em" }}
               />
             }

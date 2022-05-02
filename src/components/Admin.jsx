@@ -7,9 +7,16 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Stack } from "@mui/material";
+import axios from "axios";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { getAuthHeader, url } from "../config";
+import { getToken } from "../store/User/userSlice";
 import AdminDashboard from "./AdminDashboard";
+import Catagories from "./Tables/Catagories";
 import Feedbacks from "./Tables/Feedbacks";
+import Products from "./Tables/Products";
+import Users from "./Tables/Users";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -82,14 +89,25 @@ const useStyles = makeStyles((theme) => ({
 export default function Admin() {
   const classes = useStyles();
   const [value, setValue] = useState(0);
+  const [meta, setMeta] = useState({});
+  const [rug, setRug] = useState(false);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const token = useSelector(getToken);
+  React.useEffect(async () => {
+    const { data } = await axios.get(`${url}/admin/dash`, getAuthHeader(token));
+    if (data) {
+      setMeta(data);
+    }
+    return () => {};
+  }, [token, rug]);
+
   return (
     <Container className={classes.container}>
       <Stack spacing={1}>
         <Box p={1}>
-          <AdminDashboard />
+          <AdminDashboard dash={meta.counts} />
         </Box>
         <Box>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -100,13 +118,35 @@ export default function Admin() {
               onChange={handleChange}
               aria-label="Admin"
             >
-              <Tab label="Posts" index={0} />
-              <Tab label="Users" index={1} />
-              <Tab label="Feedbacks" index={2} />
+              <Tab label="Feedbacks" index={0} />
+              <Tab label="Posts" index={1} />
+              <Tab label="Catagories" index={2} />
+              <Tab label="Users" index={3} />
             </Tabs>
           </Box>
+          <TabPanel value={value} index={0}>
+            <Feedbacks
+              rug={rug}
+              setRug={setRug}
+              feedbacks={meta.feedbacks || []}
+            />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <Products
+              rug={rug}
+              setRug={setRug}
+              products={meta.products || []}
+            />
+          </TabPanel>
           <TabPanel value={value} index={2}>
-            <Feedbacks />
+            <Catagories
+              rug={rug}
+              setRug={setRug}
+              catagories={meta.catagories || []}
+            />
+          </TabPanel>
+          <TabPanel value={value} index={3}>
+            <Users rug={rug} setRug={setRug} users={meta.users || []} />
           </TabPanel>
         </Box>
       </Stack>
