@@ -4,7 +4,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAuthHeader, url } from "../../config";
-import PostPreview from "../EditAccount";
+import PostPreview from "../EditEmail";
 
 function Delete({ id, setRug }) {
   const token = useSelector((state) => state.user.token);
@@ -82,9 +82,9 @@ export default function Products({ products, rug, setRug }) {
       field: "owner",
       headerName: "Owner",
       width: 100,
-      renderCell: (params) => (
-        <Typography fontSize={14}>@{params.value.username}</Typography>
-      ),
+      renderCell: (params) => {
+        return <Typography fontSize={14}>@{params.value.username}</Typography>;
+      },
     },
     { field: "price", headerName: "Price (₹)", width: 100 },
 

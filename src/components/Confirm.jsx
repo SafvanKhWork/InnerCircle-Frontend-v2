@@ -49,11 +49,7 @@ export default function Confirm(props) {
   const classes = useStyles();
   return (
     <>
-      <Tooltip
-        title="Friends"
-        aria-label="friends"
-        onClick={() => setOpen(true)}
-      >
+      <Tooltip title={props.title || "Confirm"} onClick={() => setOpen(true)}>
         {props.children}
       </Tooltip>
       <Modal open={open}>
@@ -66,7 +62,10 @@ export default function Confirm(props) {
               justifyContent={"space-between"}
             >
               <Button
-                onClick={handleConfirm}
+                onClick={(props) => {
+                  setOpen(false);
+                  handleConfirm(props);
+                }}
                 variant="text"
                 color="inherit"
                 style={{ color: "green" }}

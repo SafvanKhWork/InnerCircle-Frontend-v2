@@ -15,6 +15,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+
 import axios from "axios";
 import validator from "validator";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,21 +39,50 @@ export default function SignUp(props) {
   const [inProgress, setInProgress] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState(undefined);
   const [image, setImage] = React.useState("");
+  const [validEmail, setValidEmail] = React.useState(true);
   const dispatch = useDispatch();
+
+  const checkErrors = (props) => {
+    if (
+      email.trim() === "" ||
+      firstName.trim() === "" ||
+      lastName.trim() === ""
+    ) {
+      setErrorMessage(
+        `Please Enter ${(() => {
+          if (email.trim() === "") {
+            return "Email Address";
+          } else if (firstName.trim() === "") {
+            return "First Name";
+          } else if (lastName.trim() === "") {
+            return "Last Name";
+          } else {
+            return "Required Information";
+          }
+        })()}.`
+      );
+    } else if (!validEmail) {
+      setErrorMessage(`Please Enter Valid Email Address`);
+    } else if (validEmail && firstName && lastName) {
+      return false;
+    }
+    return true;
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setInProgress(true);
-    try {
-      await axios.post(`${url}/user/register`, userInfo);
-      // dispatch(accountCreated());
-      setSent(true);
-    } catch (error) {
-      setErrorMessage(
-        `Provided email ${email} is already associated with an other existing account.`
-      );
+    if (!checkErrors()) {
+      setInProgress(true);
+      try {
+        await axios.post(`${url}/user/register`, userInfo);
+        setSent(true);
+      } catch (error) {
+        setErrorMessage(
+          `Provided email ${email} is already associated with an other existing account.`
+        );
+      }
+      setInProgress(false);
     }
-    setInProgress(false);
   };
   React.useEffect(() => {
     if (validator.isEmail(email)) {
@@ -173,6 +203,7 @@ export default function SignUp(props) {
                   value={email}
                   onChange={(event) => {
                     setEmail(event.target.value);
+                    setValidEmail(validator.isEmail(event.target.value));
                   }}
                   id="email"
                   label="Email Address"

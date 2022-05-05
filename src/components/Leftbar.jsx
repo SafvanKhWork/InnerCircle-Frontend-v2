@@ -60,6 +60,11 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
+  admin: {
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
+  },
   badge: {
     [theme.breakpoints.up("sm")]: {
       display: "none",
@@ -83,6 +88,7 @@ const Leftbar = () => {
     <Container className={classes.container}>
       {user.admin ? (
         <Link
+          className={classes.admin}
           style={{ color: "inherit", textDecoration: "none" }}
           to={"/admin"}
         >

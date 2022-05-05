@@ -87,6 +87,7 @@ const userSlice = createSlice({
       state.status = "success";
     },
     [refetchUser.rejected]: (state, action) => {
+      window.localStorage.removeItem("inner-circle-token");
       state.status = "failed";
     },
   },

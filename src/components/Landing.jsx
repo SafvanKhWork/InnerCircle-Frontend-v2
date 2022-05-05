@@ -134,7 +134,7 @@ export default function Landing() {
   const [feedbackFocus, setFeedbackFocus] = useState(false);
   const [feedback, setFeedback] = useState("");
 
-  const handleSignIn = async ({ email, password }) => {
+  const handleSignIn = async ({ email, password, setErrorMessage }) => {
     try {
       const response = await axios.post(`${url}/user/login`, {
         email,
@@ -151,10 +151,10 @@ export default function Landing() {
         return data;
       }
     } catch (error) {
-      console.log(`Provided Email Address or Password is Invalid`);
+      setErrorMessage(`Provided Email Address or Password is Invalid`);
     }
   };
-  const handleSignUp = async ({ email, name, password }) => {
+  const handleSignUp = async ({ email, name, password, setErrorMessage }) => {
     try {
       const { data } = await axios.post(`${url}/user/register`, {
         email,
@@ -162,7 +162,7 @@ export default function Landing() {
       });
       return data;
     } catch (error) {
-      console.log(`Provided Email Address or Password is Invalid`);
+      setErrorMessage(`Provided Email Address or Password is Invalid`);
     }
   };
   const handleForget = async ({ email }) => {

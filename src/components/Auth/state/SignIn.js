@@ -58,19 +58,23 @@ const SignIn = (props) => {
         !validEmail && !validPassword ? "Email & Password" : component;
       setErrorMessage(`Please Enter Valid ${component}`);
     } else if (validEmail && validPassword) {
-      return true;
+      return false;
     }
-    return false;
+    return true;
   };
   useEffect(() => {
     if (validEmail) {
       dispatch(setGlobalEmail(email));
     }
   }, [email]);
+
   const handleSubmit = async (event) => {
-    setInProgress(true);
+    event.preventDefault();
     try {
-      await props.onSignIn({ email, password });
+      if (!checkErrors()) {
+        setInProgress(true);
+        await props.onSignIn({ email, password, setErrorMessage });
+      }
     } catch (error) {
       console.log(error.message);
     }
@@ -161,7 +165,8 @@ const SignIn = (props) => {
             </Button>
             <Stack spacing={1}>
               <Button
-                onClick={() => {
+                onClick={(event) => {
+                  event.preventDefault();
                   dispatch(createAccount());
                 }}
                 variant="outlined"
@@ -170,7 +175,8 @@ const SignIn = (props) => {
                 {"Don't have an account? Sign Up"}
               </Button>
               <Button
-                onClick={() => {
+                onClick={(event) => {
+                  event.preventDefault();
                   dispatch(forgotPassword());
                 }}
                 variant="outlined"
