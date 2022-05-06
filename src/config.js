@@ -4,5 +4,5 @@ const getAuthHeader = (token) => {
     headers: { Authorization: `Bearer ${token}` },
   };
 };
-let refreshEvery = 30000;
+let refreshEvery = 3000;
 export { url, getAuthHeader, refreshEvery };

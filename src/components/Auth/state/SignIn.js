@@ -165,6 +165,14 @@ const SignIn = (props) => {
             </Button>
             <Stack spacing={1}>
               <Button
+                className="g-signin2"
+                data-onsuccess="onSignIn"
+                variant="outlined"
+                fullWidth
+              >
+                {"SignIn with Google"}
+              </Button>
+              <Button
                 onClick={(event) => {
                   event.preventDefault();
                   dispatch(createAccount());
@@ -174,6 +182,7 @@ const SignIn = (props) => {
               >
                 {"Don't have an account? Sign Up"}
               </Button>
+
               <Button
                 onClick={(event) => {
                   event.preventDefault();
