@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import validator from "validator";
 import { url } from "../../config";
 import {
+  createAccount,
   hasPassword,
   setGlobalEmail,
 } from "../../store/ApplicationStates/applicationStateSlice";
@@ -15,12 +16,38 @@ const ForgotPassword = (props) => {
   const gremail = useSelector((state) => state.applicationState.email);
   const [isSent, setIsSent] = useState(false);
   const [email, setEmail] = useState(gremail);
-
+  const [status, setStatus] = useState(false);
   useEffect(() => {
     if (validator.isEmail(email)) {
       dispatch(setGlobalEmail(email));
     }
   }, [email]);
+
+  if (status) {
+    return (
+      <Fragment>
+        <Alert severity="error">
+          <p>
+            No Account Found with Email Address <b>{email}</b>, Please create
+            new Account.
+          </p>
+        </Alert>
+        <Box py={1}>
+          <Button
+            style={{ paddingTop: 1 }}
+            fullWidth
+            onClick={() => {
+              dispatch(createAccount());
+            }}
+            variant="outlined"
+          >
+            {"Okay"}
+          </Button>
+        </Box>
+      </Fragment>
+    );
+  }
+
   if (isSent) {
     return (
       <Fragment>
@@ -65,7 +92,12 @@ const ForgotPassword = (props) => {
           <Button
             fullWidth={true}
             onClick={async () => {
-              await axios.post(`${url}/verify/email`, { email });
+              const { data } = await axios.post(`${url}/verify/email`, {
+                email,
+              });
+              if (!data?.me) {
+                setStatus(true);
+              }
               setIsSent(true);
             }}
             variant="outlined"

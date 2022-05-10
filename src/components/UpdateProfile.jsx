@@ -214,12 +214,12 @@ const UpdateProfile = (props) => {
                       variant="outlined"
                       color="primary"
                       onClick={async () => {
-                        const data = axios.patch(
+                        const data = await axios.patch(
                           `${url}/users/me`,
                           info,
                           getAuthHeader(token)
                         );
-                        console.log(data);
+
                         if (data) {
                           dispatch(refetchUser());
                           setName(account.name);
