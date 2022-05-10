@@ -20,12 +20,16 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 import axios from "axios";
-import { getToken } from "../../../store/User/userSlice";
+import { getToken, refreshUserField } from "../../../store/User/userSlice";
 import {
   createAccount,
   forgotPassword,
+  login,
   setGlobalEmail,
 } from "../../../store/ApplicationStates/applicationStateSlice";
+import reactDom from "react-dom";
+import GoogleLogin from "react-google-login";
+import { url } from "../../../config";
 
 const SignIn = (props) => {
   const dispatch = useDispatch();
@@ -164,14 +168,47 @@ const SignIn = (props) => {
               Sign In
             </Button>
             <Stack spacing={1}>
-              <Button
-                className="g-signin2"
-                data-onsuccess="onSignIn"
-                variant="outlined"
-                fullWidth
-              >
-                {"SignIn with Google"}
-              </Button>
+              <GoogleLogin
+                clientId="1065246430024-mj066qegejd30bc9fkinilgnd0o0mt4m.apps.googleusercontent.com"
+                buttonText="Continue with Google"
+                onSuccess={async (response) => {
+                  try {
+                    console.log({
+                      ...response.profileObj,
+                      token: response.accessToken,
+                      googleId: response.googleId,
+                    });
+                    setInProgress(true);
+                    try {
+                      const { data } = await axios.post(`${url}/google`, {
+                        ...response.profileObj,
+                        token: response.accessToken,
+                        googleId: response.googleId,
+                      });
+                      if (data) {
+                        window.localStorage.setItem(
+                          "inner-circle-token",
+                          JSON.stringify(data.token)
+                        );
+                        dispatch(refreshUserField({ token: data.token }));
+                        dispatch(login());
+                        return data;
+                      }
+                    } catch (error) {
+                      setErrorMessage(error.message);
+                    }
+                  } catch (error) {
+                    console.log(error.message);
+                    setErrorMessage("Someting went wrong! Please try again.");
+                  }
+                  setInProgress(false);
+                }}
+                onFailure={(response) => {
+                  setErrorMessage("Someting went wrong! Please try again.");
+                }}
+                cookiePolicy={"single_host_origin"}
+              />
+
               <Button
                 onClick={(event) => {
                   event.preventDefault();
