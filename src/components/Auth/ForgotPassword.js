@@ -95,7 +95,7 @@ const ForgotPassword = (props) => {
               const { data } = await axios.post(`${url}/verify/email`, {
                 email,
               });
-              if (!data?.me) {
+              if (data?.me) {
                 setStatus(true);
               }
               setIsSent(true);
