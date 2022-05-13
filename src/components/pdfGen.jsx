@@ -7,7 +7,7 @@ export default function HistoryPDF({ user }) {
   const pdfGenerate = () => {
     const doc = new jsPDF("l", "mm", "a4", false);
 
-    doc.addImage(user.avatar, "PNG", 5, 10, 32, 32);
+    // doc.addImage(user.avatar, "PNG", 5, 10, 32, 32);
     doc.setTextColor("#221E1F");
     doc.setFont("courier", "bold");
     doc.setFontSize(14);
