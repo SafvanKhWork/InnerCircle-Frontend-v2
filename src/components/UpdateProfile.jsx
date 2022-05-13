@@ -40,6 +40,7 @@ import UserMinibar from "./Details/Single Items/UserMinibar";
 import Confirm from "./Confirm";
 import { logout as signout } from "../store/ApplicationStates/applicationStateSlice";
 import { useNavigate } from "react-router-dom";
+import HistoryPDF from "./pdfGen.jsx";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -271,6 +272,7 @@ const UpdateProfile = (props) => {
                         Delete
                       </Button>
                     </Confirm>
+                    <HistoryPDF user={account} />
                   </Stack>
                 </div>
               </form>

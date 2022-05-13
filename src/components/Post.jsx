@@ -90,6 +90,12 @@ const Post = ({ imgs, title, description, product }) => {
   const recommandedBy2 = useSelector((state) => state.products.recommandors);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(exitProduct());
+    };
+  }, []);
   useEffect(() => {
     if (product && recommandedBy2) {
       setRecommandedBy(recommandedBy2[String(product.product_name)]);
@@ -152,9 +158,6 @@ const Post = ({ imgs, title, description, product }) => {
     <div
       onMouseEnter={() => {
         dispatch(refreshProduct(product));
-      }}
-      onMouseLeave={() => {
-        dispatch(exitProduct());
       }}
     >
       <Card variant="elevation" elevation={4} className={classes.card}>

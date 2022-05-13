@@ -20,7 +20,7 @@ import UserMinibar from "./Details/Single Items/UserMinibar";
 import Post from "./Post";
 import { findFirstOneMatching } from "array-of-objects-functions";
 import { Edit } from "@material-ui/icons";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import UpdateProfile from "./UpdateProfile";
 
 const useStyles = makeStyles((theme) => ({
@@ -157,7 +157,7 @@ export default function Profile(props) {
   const [offers, setOffers] = useState([]);
   const [edit, setEdit] = useState(false);
   const { id } = useParams();
-
+  const navigate = useNavigate();
   useEffect(async () => {
     if (props.profile) {
       setUser(account);
@@ -328,7 +328,12 @@ export default function Profile(props) {
           {offers?.map((offer) => {
             const offerObj = findFirstOneMatching(offer.bids, "user", user._id);
             return (
-              <div key={user._id + " " + offer._id}>
+              <div
+                onClick={() => {
+                  navigate(`/item/${offer._id}`);
+                }}
+                key={user._id + " " + offer._id}
+              >
                 <Stack
                   px={2}
                   py={1}
@@ -347,8 +352,8 @@ export default function Profile(props) {
                       {
                         <Avatar
                           variant="square"
-                          src={url + offer.images[0]}
-                          sx={{ width: 128, height: 64, borderRadius: "0.1em" }}
+                          src={offer.images[0]}
+                          sx={{ width: 96, height: 64, borderRadius: "0.1em" }}
                         />
                       }
                     </Grid>

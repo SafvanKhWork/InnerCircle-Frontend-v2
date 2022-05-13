@@ -13,12 +13,13 @@ const initialState = {
   description: "",
   price: 0,
   catagory: "",
-  owner: "",
+  owner: {},
   bids: [],
   comments: [],
   likes: 0,
   alternatives: [],
   liked: false,
+  createdAt: new Date().toString(),
 };
 
 const productInViewSlice = createSlice({
@@ -33,6 +34,7 @@ const productInViewSlice = createSlice({
       state.model = payload.model;
       state.description = payload.description;
       state.price = payload.price;
+      state.createdAt = payload.createdAt;
       state.catagory = payload.catagory;
       state.owner = payload.owner;
       state.bids = payload.bids;
@@ -52,22 +54,7 @@ const productInViewSlice = createSlice({
       });
     },
     exitProduct: (state, action) => {
-      state._id = "";
-      state.createdAt = "";
-      state.name = "";
-      state.product_name = "";
-      state.model = "";
-      state.description = "";
-      state.price = 0;
-      state.catagory = "";
-      state.owner = "";
-      state.bids = [];
-      state.comments = [];
-      state.images = [];
-      state.quantity = 0;
-      state.like = [];
-      state.likes = 0;
-      state.alternatives = [];
+      state = initialState;
     },
   },
 });

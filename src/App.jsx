@@ -28,6 +28,7 @@ import Landing from "./components/Landing";
 import Redirect from "./components/Redirect";
 import Profile from "./components/Profile";
 import Admin from "./components/Admin";
+import ProductPage from "./components/ProductPage";
 
 const useStyles = makeStyles((theme) => ({
   right: {
@@ -126,6 +127,7 @@ const App = () => {
                   <Route path="/catagories/:catagory" element={<Feed />} />
                   <Route path="/feed" element={<Feed feed />} />
                   <Route path="/discover" element={<Feed discover />} />
+                  <Route path="/item/:id" element={<ProductPage />} />
                   <Route
                     path="/profile/:id"
                     element={<Profile profile={false} />}

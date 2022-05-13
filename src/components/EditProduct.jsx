@@ -307,6 +307,7 @@ const EditProduct = (props) => {
                     >
                       Cancel
                     </Button>
+
                     <Confirm
                       message={`Are you sure you want to delete this product?`}
                       onConfirm={async () => {
