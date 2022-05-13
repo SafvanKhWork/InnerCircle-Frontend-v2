@@ -4,7 +4,6 @@ import { Scrollbars } from "react-custom-scrollbars";
 import { useSelector } from "react-redux";
 import { getUser } from "../../../store/User/userSlice";
 
-//
 import ResultItem from "./ResultItem";
 
 const SearchBar = ({ setSearchQuery }) => (
@@ -44,9 +43,7 @@ export default function SearchBox(props) {
   if (searchQuery.trim() === "") {
     matches = users;
   }
-  // console.log(matches);
   const results = matches.map((user) => {
-    // console.log(user);
     return (
       <ResultItem
         key={user}

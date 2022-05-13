@@ -4,18 +4,15 @@ import axios from "axios";
 import {
   Stack,
   Grid,
-  Button,
   IconButton,
   Box,
   Avatar,
   Typography,
-  ButtonGroup,
   Paper,
   LinearProgress,
 } from "@mui/material";
 import {
   Done,
-  Add,
   Close,
   PersonRemove,
   PersonAdd,
@@ -23,24 +20,8 @@ import {
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { url } from "../../../config";
-import {
-  getToken,
-  getUser,
-  refetchUser,
-  refreshUser,
-} from "../../../store/User/userSlice";
+import { getToken, getUser, refreshUser } from "../../../store/User/userSlice";
 import { Link } from "react-router-dom";
-// import { getToken } from "../../../store/User/userSlice";
-// import { url } from "../../../config";
-
-// const acceptRequest = async (uname, authHeader) => {
-//   console.log(authHeader);
-//   await axios.patch(`${url}/accept-friend-request/${uname}`, authHeader);
-// };
-// const rejectRequest = async (uname, authHeader) => {
-//   console.log(authHeader);
-//   await axios.delete(`${url}/reject-friend-request/${uname}`, authHeader);
-// };
 
 const UserMinibar = (props) => {
   const [user, setUser] = useState("");

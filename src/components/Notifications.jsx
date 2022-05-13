@@ -1,21 +1,14 @@
 import { Container, makeStyles, Modal, Tooltip, Box } from "@material-ui/core";
 
 import { Notifications as Notification } from "@material-ui/icons";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Carousel from "react-material-ui-carousel";
 import axios from "axios";
 import { url, getAuthHeader } from "../config";
 
 import { Scrollbars } from "react-custom-scrollbars";
-import {
-  getToken,
-  refetchUser,
-  refreshUserField,
-} from "../store/User/userSlice";
-import { setSpecifiedList } from "../store/Products/productListSlice";
+import { refreshUserField } from "../store/User/userSlice";
 import { Divider, Stack, Typography } from "@mui/material";
-import UserMinibar from "./Details/Single Items/UserMinibar";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -138,11 +131,6 @@ const Notifications = (props) => {
                     <Fragment key={notification._id}>
                       <Divider orientation="horizontal" />
                       <Stack direction={"row"} spacing={1}>
-                        {/* {newNotification ? (
-                          <FiberManualRecord color="error" />
-                        ) : (
-                          ""
-                        )} */}
                         <Typography
                           color={newNotification ? "HighlightText" : "GrayText"}
                         >

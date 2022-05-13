@@ -1,26 +1,10 @@
 import { Badge, Container, makeStyles, Typography } from "@material-ui/core";
-import {
-  Bookmark,
-  List,
-  ExitToApp,
-  Face,
-  Home,
-  Person,
-  PhotoCamera,
-  PlayCircleOutline,
-  Settings,
-  Storefront,
-  TabletMac,
-  Explore,
-} from "@material-ui/icons";
+import { ExitToApp, Face, Home, Person, Explore } from "@material-ui/icons";
 import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import { Stack } from "@mui/material";
-import userEvent from "@testing-library/user-event";
-import { Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../store/User/userSlice";
-import { setCurrent } from "../store/Products/productListSlice";
 import { getUser } from "../store/User/userSlice";
 import Friends from "./Friends";
 import { logout as signout } from "../store/ApplicationStates/applicationStateSlice";

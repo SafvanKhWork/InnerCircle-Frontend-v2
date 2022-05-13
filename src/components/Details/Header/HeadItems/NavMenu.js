@@ -122,7 +122,6 @@ const NavMenu = (props) => {
                   >
                     <Typography>Discover</Typography>
                   </MenuItem>
-                  {/* <Divider /> */}
                   <MenuItem
                     key={"Catagory"}
                     onClick={() => {
@@ -132,7 +131,6 @@ const NavMenu = (props) => {
                   >
                     <Typography>Catagory</Typography>
                   </MenuItem>
-                  {/* <Divider /> */}
                   <MenuItem
                     onClick={() => {
                       handleCloseNavMenu();
@@ -162,17 +160,7 @@ const NavMenu = (props) => {
                 ))
               )}
             </Link>
-          ) : // menu.map((page, i) => (
-          //   <MenuItem
-          //     key={"menuitem" + i}
-          //     onClick={() => {
-          //       setMenu(catagories);
-          //     }}
-          //   >
-          //     <Typography>{page}</Typography>
-          //   </MenuItem>
-          // ))
-          search && loading ? (
+          ) : search && loading ? (
             <Box
               sx={{
                 position: "absolute",

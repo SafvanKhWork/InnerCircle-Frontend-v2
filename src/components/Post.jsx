@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardActionArea,
   CardActions,
@@ -11,37 +10,28 @@ import {
   makeStyles,
   styled,
   Box,
-  Tooltip,
   Collapse,
 } from "@material-ui/core";
 import { Avatar, Typography } from "@mui/material";
 import { red, blue, green, yellow } from "@material-ui/core/colors";
 import {
   Share,
-  AttachMoney,
-  TextSnippet,
   Favorite,
   ExpandMore,
-  MoreVert,
-  Remove,
-  Add,
   MonetizationOn,
-  SpokeIcon,
   Comment,
   Edit,
 } from "@material-ui/icons";
 import Carousel from "react-material-ui-carousel";
-import { format, formatDistance, formatRelative, subDays } from "date-fns";
-import { Fragment, useEffect, useState } from "react";
+import { formatDistance } from "date-fns";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { url } from "../config";
 import { AvatarGroup, Stack } from "@mui/material";
 import Comments from "./Details/Comments/Comments";
 import Bids from "./Details/Bids/Bids";
-import NewBid from "./Details/Bids/NewBid";
 import SearchBar from "./Details/Search/Search";
 import axios from "axios";
-import Confirm from "./Confirm";
 import EditProduct from "./EditProduct";
 import {
   exitProduct,

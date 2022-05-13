@@ -2,19 +2,10 @@ import { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 import axios from "axios";
 import { url } from "../../config";
-
 import UserResultItem from "../User/UserMinibar";
 import ProductResultItem from "./ProductResultItem";
 import { useSelector } from "react-redux";
 
-// const users = [
-//   { name: "safvan khalifa", username: "khsafvan" },
-//   { name: "lukman", username: "khlukman" },
-//   { name: "test1", username: "khtest" },
-//   { name: "subhan", username: "khsubhan" },
-
-//   { name: "test4", username: "4tester" },
-// ];
 let value;
 let prev = "";
 const SearchBar = ({ setLoading, setSearchQuery, search }) => (

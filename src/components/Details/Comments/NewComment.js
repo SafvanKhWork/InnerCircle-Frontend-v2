@@ -1,15 +1,15 @@
 import { Box, Stack, Button, TextField } from "@mui/material";
 import axios from "axios";
-import { useState, Fragment } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 //
 
 import { url } from "../../../config";
-import { getToken, getUser } from "../../../store/User/userSlice";
+import { getToken } from "../../../store/User/userSlice";
 
 const addComment = async (msg, id, token) => {
-  const comments = await axios.patch(
+  await axios.patch(
     `${url}/comment/${id}`,
     {
       value: msg,

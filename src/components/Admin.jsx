@@ -9,7 +9,7 @@ import {
 import { Refresh } from "@material-ui/icons";
 import { IconButton, Stack } from "@mui/material";
 import axios from "axios";
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { getAuthHeader, url } from "../config";
 import { getToken, getUser } from "../store/User/userSlice";
@@ -139,32 +139,6 @@ export default function Admin() {
           >
             <Refresh className={spin ? classes.rotateIcon : ""} />
           </IconButton>
-          <Stack
-            // style={{
-            //   backgroundColor: "gray",
-            //   borderRadius: "1.2em",
-            //   padding: 5,
-            // }}
-            direction={"row"}
-            spacing={1}
-          >
-            {/* <Typography
-              color="primary"
-              variant="h6"
-              display="flex"
-              style={{ alignSelf: "center" }}
-            >
-              superuser
-            </Typography>
-            <Typography
-              color="secondary"
-              variant="h6"
-              display="flex"
-              style={{ alignSelf: "center", fontStyle: "italic" }}
-            >
-              #{account.username}
-            </Typography> */}
-          </Stack>
         </Stack>
         <Box p={1}>
           <AdminDashboard dash={meta.counts} />

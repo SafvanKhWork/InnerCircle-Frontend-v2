@@ -1,23 +1,9 @@
-import {
-  Box,
-  Stack,
-  Avatar,
-  Typography,
-  IconButton,
-  CardHeader,
-  Divider,
-  Grid,
-  Button,
-  ThemeProvider,
-  TextField,
-  ButtonGroup,
-} from "@mui/material";
-import { Send, ArrowForward, ArrowBack } from "@mui/icons-material";
+import { Box, Stack, Button } from "@mui/material";
+import { ArrowForward, ArrowBack } from "@mui/icons-material";
 import { useState, Fragment } from "react";
-import { Scrollbars } from "react-custom-scrollbars";
 
 //
-import theme from "../../../../theme";
+
 import Comment from "./SingleComment";
 
 let changed = false;

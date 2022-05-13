@@ -1,58 +1,32 @@
 import * as React from "react";
 import {
-  AppBar,
   Box,
-  Toolbar,
   IconButton,
-  Typography,
-  Container,
-  Avatar,
   Button,
   Tooltip,
-  Drawer,
   Divider,
-  ListItem,
-  ListItemText,
-  ThemeProvider,
-  MenuItem,
   Popper,
   Grow,
-  ClickAwayListener,
   Paper,
-  Menu,
   MenuList,
   Badge,
   Alert,
 } from "@mui/material";
 import GroupIcon from "@mui/icons-material/Group";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { getUser } from "../../../store/User/userSlice";
-import { url } from "../../../config";
-import { getToken, logout } from "../../../store/User/userSlice";
 import SingleFriendRequest from "./SingleFriendRequest";
-import Scrollbars from "react-custom-scrollbars";
 
 //
 
 const FriendRequests = (props) => {
-  const dispatch = useDispatch();
-
   const [open, setOpen] = React.useState(false);
-  const drawerWidth = 240;
   const anchorRef = React.useRef(null);
   const user = useSelector(getUser);
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-    }
-
-    setOpen(false);
-  };
   function handleListKeyDown(event) {
     if (event.key === "Tab") {
       event.preventDefault();

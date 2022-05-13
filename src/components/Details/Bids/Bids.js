@@ -1,28 +1,9 @@
-import {
-  Box,
-  Stack,
-  Typography,
-  Button,
-  Divider,
-  Grid,
-  ButtonGroup,
-  Card,
-  IconButton,
-  Avatar,
-} from "@mui/material";
-import {
-  CheckCircle,
-  Cancel,
-  ArrowForward,
-  ArrowBack,
-} from "@mui/icons-material";
+import { Box, Stack } from "@mui/material";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useState, Fragment } from "react";
-import { green, red } from "@mui/material/colors";
-
 import Bid from "./SingleBid";
 import { useSelector } from "react-redux";
-import { getToken, getUser } from "../../../store/User/userSlice";
+import { getUser } from "../../../store/User/userSlice";
 import NewBid from "./NewBid";
 
 const Bids = (props) => {

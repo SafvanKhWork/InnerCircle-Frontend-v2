@@ -4,24 +4,14 @@ import Feed from "./components/Feed";
 import Leftbar from "./components/Leftbar";
 import Navbar from "./components/Navbar";
 import Rightbar from "./components/Rightbar";
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { getAuthHeader, url } from "./config";
 import { useDispatch, useSelector } from "react-redux";
-import { getToken, getUser, refreshUser } from "./store/User/userSlice";
-import {
-  setCurrent,
-  setSpecifiedList,
-} from "./store/Products/productListSlice";
-import {
-  Link,
-  Route,
-  BrowserRouter as Router,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { refreshUser } from "./store/User/userSlice";
+import { setSpecifiedList } from "./store/Products/productListSlice";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Notfound from "./components/Notfound";
-
 import { refetchUser } from "./store/User/userSlice";
 import { login } from "./store/ApplicationStates/applicationStateSlice";
 import Landing from "./components/Landing";
@@ -42,12 +32,11 @@ const App = () => {
   const { token, admin } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { loggedIn } = useSelector((state) => state.applicationState);
-  // console.log(loggedIn, token);
   if (token && token !== "" && !loggedIn) {
     dispatch(login());
   }
   //Get User By Token in Local Storage
-  useEffect(() => {
+  useEffect(async () => {
     (async () => {
       if (!token || token === "") {
         return;
@@ -57,7 +46,7 @@ const App = () => {
         dispatch(refreshUser(data));
       }
     })();
-  }, [token]);
+  }, [token, dispatch]);
 
   useEffect(async () => {
     if (token && token !== "") {

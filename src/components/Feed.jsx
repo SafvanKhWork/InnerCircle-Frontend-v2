@@ -1,23 +1,12 @@
-import {
-  Box,
-  Container,
-  Divider,
-  LinearProgress,
-  makeStyles,
-} from "@material-ui/core";
+import { Box, Container, LinearProgress, makeStyles } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import { Fragment, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { url } from "../config";
 import Notfound from "./Notfound";
 import { useNavigate } from "react-router-dom";
 import Post from "./Post";
-import {
-  getUniqueValues,
-  removeFirstOneMatching,
-  findAllMatching,
-} from "array-of-objects-functions";
+import { findAllMatching } from "array-of-objects-functions";
 import { setCurrent } from "../store/Products/productListSlice";
 
 const useStyles = makeStyles((theme) => ({
@@ -96,15 +85,12 @@ const Feed = (props) => {
               shape="rounded"
               page={page}
               variant="outlined"
-              // defaultPage={1}
               onChange={(event, value) => {
                 setPage(value);
                 setStart((value - 1) * 5);
-
-                document.body.scrollTop = 0; // For Safari
-                document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop = 0;
               }}
-              //count={10}
               count={Math.ceil(current.length / 5)}
               color="primary"
             />

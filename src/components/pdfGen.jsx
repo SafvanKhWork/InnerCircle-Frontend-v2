@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import jsPDF from "jspdf";
 import Button from "@mui/material/Button";
 import PrintIcon from "@mui/icons-material/Print";
@@ -6,8 +6,6 @@ import PrintIcon from "@mui/icons-material/Print";
 export default function HistoryPDF({ user }) {
   const pdfGenerate = () => {
     const doc = new jsPDF("l", "mm", "a4", false);
-
-    // doc.addImage(user.avatar, "PNG", 5, 10, 32, 32);
     doc.setTextColor("#221E1F");
     doc.setFont("courier", "bold");
     doc.setFontSize(14);

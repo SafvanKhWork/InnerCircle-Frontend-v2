@@ -13,41 +13,22 @@ import {
 } from "@material-ui/core";
 import {
   Cancel,
-  ShoppingCart,
   Notifications as Notification,
   Search,
-  Refresh,
   Sync,
 } from "@material-ui/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { url } from "../config";
-import { createStyles } from "@material-ui/styles";
 import {
   setCurrent,
   setSpecifiedList,
 } from "../store/Products/productListSlice";
 import { getUser, refetchUser } from "../store/User/userSlice";
-import AccountSettings from "./Details/Header/HeadItems/AccountSettings";
 import Notifications from "./Notifications";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-// const useStyles = makeStyles(() =>
-//   createStyles({
-//     rotateIcon: {
-//       animation: "$spin 2s linear infinite",
-//     },
-//     "@keyframes spin": {
-//       "0%": {
-//         transform: "rotate(360deg)",
-//       },
-//       "100%": {
-//         transform: "rotate(0deg)",
-//       },
-//     },
-//   })
-// );
 const useStyles = makeStyles((theme) => ({
   rotateIcon: {
     animation: "$spin 2s linear infinite",

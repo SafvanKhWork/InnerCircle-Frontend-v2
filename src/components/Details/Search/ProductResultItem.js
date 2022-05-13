@@ -1,18 +1,6 @@
-import { useState } from "react";
-import {
-  Stack,
-  Grid,
-  Button,
-  IconButton,
-  Avatar,
-  Typography,
-} from "@mui/material";
-import { Done, Add } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-import { url } from "../../config";
+import { Stack, Grid, Avatar, Typography } from "@mui/material";
 
 const ResultItem = (props) => {
-  const [isSent, setIsSent] = useState(false);
   const user = props.user;
   return (
     <div onClick={props.handleCloseNavMenu}>

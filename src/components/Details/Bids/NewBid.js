@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Box, Stack, TextField, MenuItem, Button } from "@mui/material";
+import { Stack, TextField, MenuItem, Button } from "@mui/material";
 import axios from "axios";
 import { url } from "../../../config";
 import { useSelector } from "react-redux";
-import { getToken, getUser } from "../../../store/User/userSlice";
+import { getToken } from "../../../store/User/userSlice";
 
 const currencies = [
   {

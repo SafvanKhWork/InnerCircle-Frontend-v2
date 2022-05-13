@@ -1,23 +1,8 @@
-import {
-  Box,
-  Stack,
-  Avatar,
-  Typography,
-  IconButton,
-  Collapse,
-  CardHeader,
-  Divider,
-  Grid,
-  Button,
-  ThemeProvider,
-  TextField,
-} from "@mui/material";
-import { green, red } from "@mui/material/colors";
+import { Box, Stack, Avatar, Typography, Collapse } from "@mui/material";
+
 import axios from "axios";
 import { url } from "../../../config";
-import { Send, ArrowForward, ArrowBack } from "@mui/icons-material";
 import { useState, useEffect, Fragment } from "react";
-import { Scrollbars } from "react-custom-scrollbars";
 import { useSelector } from "react-redux";
 import { getToken } from "../../../store/User/userSlice";
 
@@ -29,12 +14,9 @@ const Comment = (props) => {
 
   useEffect(async () => {
     async function getUser(id) {
-      const { data, status: responseStatus } = await axios.get(
-        `${url}/user/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const { data } = await axios.get(`${url}/user/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setUser(data);
     }
     getUser(comment.user);

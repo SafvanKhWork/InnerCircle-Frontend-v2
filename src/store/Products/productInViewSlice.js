@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { url } from "../../config";
 
 const initialState = {
   images: [],

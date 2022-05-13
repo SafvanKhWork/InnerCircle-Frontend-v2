@@ -4,10 +4,6 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
-import { useSelector } from "react-redux";
-import { getToken } from "../store/User/userSlice";
-import axios from "axios";
-import { getAuthHeader, url } from "../config";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",

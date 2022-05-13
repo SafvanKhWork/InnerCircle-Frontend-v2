@@ -1,20 +1,9 @@
-import {
-  alpha,
-  Card,
-  deprecatedPropType,
-  Grid,
-  makeStyles,
-  Paper,
-  Tab,
-  Tabs,
-} from "@material-ui/core";
-// import { TabPanel } from "@material-ui/lab";
+import { alpha, Card, Grid, makeStyles, Tab, Tabs } from "@material-ui/core";
 import { Avatar, Box, Pagination, Stack, Typography } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useSelector } from "react-redux";
-import queriesComment from "../assets/2469966.jpg";
 import { getAuthHeader, url } from "../config";
 import UserMinibar from "./Details/Single Items/UserMinibar";
 import Post from "./Post";
@@ -132,12 +121,6 @@ function TabPanel(props) {
     </div>
   );
 }
-
-// TabPanel.propTypes = {
-//   children: PropTypes.node,
-//   index: PropTypes.number.isRequired,
-//   value: PropTypes.number.isRequired,
-// };
 
 function a11yProps(index) {
   return {
@@ -290,7 +273,6 @@ export default function Profile(props) {
             shape="rounded"
             page={page}
             variant="outlined"
-            // defaultPage={1}
             onChange={(event, value) => {
               setPage(value);
               setStart((value - 1) * 5);
@@ -298,7 +280,6 @@ export default function Profile(props) {
               document.body.scrollTop = 0; // For Safari
               document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
             }}
-            //count={10}
             count={Math.ceil((posts?.length || 1) / 5)}
             color="primary"
           />

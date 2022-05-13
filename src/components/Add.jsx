@@ -2,20 +2,15 @@ import {
   Button,
   Container,
   Fab,
-  FormControlLabel,
-  FormLabel,
   Input,
   makeStyles,
   MenuItem,
   Modal,
-  Radio,
-  RadioGroup,
   Snackbar,
   TextField,
   Tooltip,
   Box,
   ImageList,
-  ImageListItem,
 } from "@material-ui/core";
 import { Add as AddIcon } from "@material-ui/icons";
 import { useEffect, useState } from "react";
@@ -27,10 +22,7 @@ import { url, getAuthHeader } from "../config";
 
 import { Scrollbars } from "react-custom-scrollbars";
 import { getToken, refetchUser } from "../store/User/userSlice";
-import {
-  setCurrent,
-  setSpecifiedList,
-} from "../store/Products/productListSlice";
+import { setSpecifiedList } from "../store/Products/productListSlice";
 
 const useStyles = makeStyles((theme) => ({
   fab: {

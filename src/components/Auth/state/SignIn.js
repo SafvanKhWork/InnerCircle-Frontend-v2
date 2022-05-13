@@ -1,24 +1,14 @@
 import { useState, useEffect, Fragment } from "react";
 import validator from "validator";
 import {
-  Avatar,
   Button,
-  CssBaseline,
   TextField,
-  FormControlLabel,
-  Checkbox,
-  Link,
   Stack,
   Box,
-  Typography,
-  Container,
-  Grid,
   Alert,
   CircularProgress,
-  Paper,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-
 import axios from "axios";
 import { getToken, refreshUserField } from "../../../store/User/userSlice";
 import {
@@ -27,17 +17,12 @@ import {
   login,
   setGlobalEmail,
 } from "../../../store/ApplicationStates/applicationStateSlice";
-import reactDom from "react-dom";
 import GoogleLogin from "react-google-login";
 import { url } from "../../../config";
 
 const SignIn = (props) => {
   const dispatch = useDispatch();
-  const token = useSelector(getToken);
   let temail;
-  const { loggedIn: isLoggedIn } = useSelector(
-    (state) => state.applicationState
-  );
   const gremail = useSelector((state) => state.applicationState.email);
   const [inProgress, setInProgress] = useState(false);
   const [errorMessage, setErrorMessage] = useState(undefined);
@@ -46,7 +31,6 @@ const SignIn = (props) => {
   const [validEmail, setValidEmail] = useState(true);
   const [validPassword, setValidPassword] = useState(true);
   const [strongPassword, setStrongPassword] = useState(true);
-  let user;
 
   const checkErrors = () => {
     if (email.trim() === "" || password.trim() === "") {

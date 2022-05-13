@@ -1,32 +1,18 @@
 import {
   Container,
-  Fab,
-  FormControlLabel,
-  FormLabel,
-  Input,
   makeStyles,
-  MenuItem,
   Modal,
-  Radio,
-  RadioGroup,
-  Snackbar,
   TextField,
   Tooltip,
   Box,
-  ImageList,
-  ImageListItem,
 } from "@material-ui/core";
-import { Alert, Button, IconButton } from "@mui/material";
-import { Add as AddIcon, Cancel, Close, Group } from "@material-ui/icons";
+import { Alert, Button } from "@mui/material";
+import { Group } from "@material-ui/icons";
 import { Fragment, useEffect, useState } from "react";
-import MuiAlert from "@material-ui/lab/Alert";
-import { useDispatch, useSelector } from "react-redux";
-import Carousel from "react-material-ui-carousel";
+import { useSelector } from "react-redux";
 import axios from "axios";
-import { url, getAuthHeader } from "../config";
-
+import { url } from "../config";
 import { Scrollbars } from "react-custom-scrollbars";
-import { setSpecifiedList } from "../store/Products/productListSlice";
 import { Divider, Stack, Typography } from "@mui/material";
 import UserMinibar from "./Details/Single Items/UserMinibar";
 
@@ -61,10 +47,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Friends = (props) => {
-  const dispatch = useDispatch();
   const classes = useStyles();
   const account = useSelector((state) => state.user);
-  const { circle, username: you, token } = account;
+  const { circle, username: you } = account;
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState(false);
   const [query, setQuery] = useState("");
@@ -171,10 +156,6 @@ const Friends = (props) => {
               autoHideTimeout={0}
               autoHideDuration={200}
             >
-              {/* <Typography color={"GrayText"} fontWeight={"bold"}>
-                  FriendsW
-                </Typography> 
-                 <Divider orientation="horizontal" sx={{ color: "GrayText" }} />*/}
               <Box m={1}>
                 {!search || query === "" ? (
                   <Stack spacing={1}>

@@ -1,8 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
-import { url } from "../../config";
-
-let authHeader;
 
 const initialState = {
   current: [],
@@ -25,10 +21,6 @@ const productListSlice = createSlice({
     },
     refreshCatagory: (state, { payload }) => {
       try {
-        // const { data } = await axios.get(
-        //   `${url}/products/catagory/${payload}`,
-        //   authHeader
-        // );
         state.catagory = [...payload];
       } catch (error) {
         console.error(error.message);
@@ -36,7 +28,6 @@ const productListSlice = createSlice({
     },
     refreshFeed: (state, { payload }) => {
       try {
-        // const { data } = await axios.get(`${url}/feed`, authHeader);
         state.feed = [...payload];
       } catch (error) {
         console.log(error.message);
@@ -44,7 +35,6 @@ const productListSlice = createSlice({
     },
     refreshRecommandation: (state, { payload }) => {
       try {
-        // const { data } = axios.get(`${url}/recommanded`, authHeader);
         state.recommandation = [...payload];
       } catch (error) {
         console.log(error.message);

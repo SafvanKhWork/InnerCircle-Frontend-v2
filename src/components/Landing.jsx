@@ -5,24 +5,18 @@ import {
   Button,
   Container,
   Grid,
-  Icon,
-  IconButton,
   makeStyles,
   Paper,
   Toolbar,
 } from "@material-ui/core";
 import { TextField, Typography } from "@mui/material";
-import LoginIcon from "@mui/icons-material/Login";
 import { Divider, Stack } from "@mui/material";
 import React, { useState } from "react";
-import Carousel from "react-material-ui-carousel";
 import traditionalMarket from "../assets/4331336.jpg";
-import happyFamily from "../assets/5865.jpg";
 import queriesComment from "../assets/2469966.jpg";
 import interestedBuyer from "../assets/4706264 (copy).jpg";
 import detailedInfo from "../assets/5100169 (copy).jpg";
 import barterMobile from "../assets/mobileList.webp";
-import { DialogAuth } from "react-mui-auth-page";
 import axios from "axios";
 import { url } from "../config";
 import { useDispatch } from "react-redux";
@@ -170,8 +164,6 @@ export default function Landing() {
     return data;
   };
 
-  const handleSocial = {};
-
   return (
     <div>
       <AppBar position="fixed">
@@ -197,32 +189,12 @@ export default function Landing() {
           </AuthModel>
         </Toolbar>
       </AppBar>
-      {/* <DialogAuth
-        open={open}
-        textFieldVariant="outlined"
-        logoComponent={
-          <>
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Cortana-vector-logo.png"
-              alt="InnerCircle"
-              height="100px"
-            />
-          </>
-        }
-        logoName={"InnerCircle"}
-        onClose={handleClose}
-        handleSignUp={handleSignUp}
-        handleForget={handleForget}
-        handleSignIn={handleSignIn}
-        handleSocial={handleSocial}
-      /> */}
       <Container className={classes.container}>
         <Grid
           style={{ display: "flex", justifyContent: "center" }}
           spacing={1}
           container
         >
-          {/* <img src={happyFamily} className={classes.aboveImage} height={300} /> */}
           <Grid item lg={6}>
             <Box
               minHeight={500}
@@ -360,11 +332,7 @@ export default function Landing() {
       </Container>
       <Box style={{ backgroundColor: "#202647" }} minHeight={350}>
         <Box p={3}>
-          <Grid
-            // style={{ display: "flex", justifyContent: "center" }}
-            spacing={1}
-            container
-          >
+          <Grid spacing={1} container>
             <Grid item lg={6}>
               <Box style={{ paddingRight: "15%" }}>
                 <Stack direction={"column"} spacing={1}>

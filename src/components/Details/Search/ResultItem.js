@@ -1,26 +1,17 @@
 import { useState, useEffect } from "react";
-import {
-  Stack,
-  Grid,
-  Button,
-  IconButton,
-  Avatar,
-  Typography,
-} from "@mui/material";
+import { Stack, Grid, IconButton, Avatar, Typography } from "@mui/material";
 import { Done, Add } from "@mui/icons-material";
 import { url } from "../../../config";
 import { useSelector } from "react-redux";
 import { getToken } from "../../../store/User/userSlice";
 import axios from "axios";
-import { refreshRecommandation } from "../../../store/Products/productListSlice";
 
 const ResultItem = (props) => {
   const [isSent, setIsSent] = useState(false);
   const [user, setUser] = useState(props.user || {});
   const token = useSelector(getToken);
-  const recommand = props.recommand;
   const product = useSelector((state) => state.productInView);
-  // console.log(user);
+
   useEffect(async () => {
     async function getUser(uname) {
       try {
@@ -30,13 +21,13 @@ const ResultItem = (props) => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-        // console.log(data);
+
         return data;
       } catch (error) {
-        // console.log(error.message);
+        console.log(error.message);
       }
     }
-    // console.log(props.username);
+
     if (props.username) {
       setUser(await getUser(props.username));
     }

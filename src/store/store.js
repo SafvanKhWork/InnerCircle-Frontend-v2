@@ -1,10 +1,9 @@
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./User/userSlice";
 import productInViewReducer from "./Products/productInViewSlice";
 import productListReducer from "./Products/productListSlice";
 import userInViewReducer from "./User/userInViewSlice";
 import applicationStateReducer from "./ApplicationStates/applicationStateSlice";
-// import { composeWithDevTools } from "@redux-devtools/extension";
 
 const store = configureStore({
   reducer: {
@@ -14,10 +13,6 @@ const store = configureStore({
     products: productListReducer,
     productInView: productInViewReducer,
   },
-  // middleware: (getDefaultMiddleware) =>
-  // getDefaultMiddleware({
-  // serializableCheck: false,
-  // }),
 });
 
 export default store;

@@ -1,28 +1,16 @@
 import * as React from "react";
 import {
-  AppBar,
   Box,
-  Toolbar,
   IconButton,
-  Typography,
-  Container,
   Avatar,
-  Button,
   Tooltip,
-  Drawer,
-  Divider,
-  ListItem,
-  ListItemText,
-  ThemeProvider,
   MenuItem,
   Popper,
   Grow,
   ClickAwayListener,
   Paper,
-  Menu,
   MenuList,
 } from "@mui/material";
-import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getUser } from "../../../../store/User/userSlice";
 import { logout } from "../../../../store/User/userSlice";
@@ -102,19 +90,12 @@ const AccountSettings = (props) => {
                   onKeyDown={handleListKeyDown}
                 >
                   <MenuItem key={"profile"} onClick={handleClose}>
-                    {/* <Link
-                      style={{ color: "inherit", textDecoration: "none" }}
-                      to="/profile"
-                    >
-                      Profile
-                    </Link> */}
                     Profile
                   </MenuItem>
 
                   <MenuItem
                     key={"logout"}
                     onClick={() => {
-                      // props.status.setIsLoggedIn(false);
                       dispatch(logout());
                     }}
                   >

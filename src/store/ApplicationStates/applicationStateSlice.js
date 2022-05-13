@@ -27,17 +27,14 @@ const applicationStateSlice = createSlice({
     },
     createAccount: (state, action) => {
       const tempState = { ...current(state) };
-      // console.log(tempState);
       tempState.existingUser = false;
       return tempState;
     },
     accountCreated: (state, action) => {
       const tempState = { ...current(state) };
-      // console.log(tempState);
       tempState.existingUser = true;
       return tempState;
     },
-    // hasAccount: (state, action) => (state.existingUser = false),
     forgotPassword: (state, action) => {
       const tempState = { ...current(state) };
       tempState.forgotPassword = true;

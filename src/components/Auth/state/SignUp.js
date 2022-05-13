@@ -1,17 +1,12 @@
 import * as React from "react";
 import {
   Button,
-  CssBaseline,
   TextField,
   Alert,
   Grid,
   Box,
-  Typography,
-  Container,
   Stack,
   Avatar,
-  IconButton,
-  Divider,
   CircularProgress,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -25,10 +20,6 @@ import {
 } from "../../../store/ApplicationStates/applicationStateSlice";
 import { url } from "../../../config";
 import gravatar from "gravatar";
-
-const Input = styled("input")({
-  display: "none",
-});
 
 export default function SignUp(props) {
   const gremail = useSelector((state) => state.applicationState.email);

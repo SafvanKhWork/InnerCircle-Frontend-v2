@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Container,
   makeStyles,
@@ -8,7 +7,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Stack } from "@mui/material";
-import { ar } from "date-fns/locale";
 import React, { useState } from "react";
 
 const useStyles = makeStyles((theme) => ({

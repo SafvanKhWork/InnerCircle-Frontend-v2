@@ -1,12 +1,5 @@
-import { Fragment } from "react";
 import { Alert, AlertTitle } from "@material-ui/lab";
-import {
-  Box,
-  Button,
-  Divider,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import { Container } from "@mui/material";
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -56,25 +49,6 @@ export default function Notfound({ is404, alone }) {
           {msg.describe}
         </Typography>
       </Alert>
-      {/* <Divider flexItem style={{ marginBottom: 5 }} />
-      <Box
-        fontSize={18}
-        p={1}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
-        <Button fullWidth>
-          <Typography
-            style={{
-
-              fontSize: 18,
-            }}
-          >
-            Home
-          </Typography>
-        </Button>
-      </Box> */}
     </Container>
   );
 }

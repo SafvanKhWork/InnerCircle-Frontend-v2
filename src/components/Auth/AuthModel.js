@@ -1,15 +1,5 @@
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  Typography,
-  Modal,
-  Paper,
-  Card,
-  Tab,
-  Stack,
-  IconButton,
-} from "@mui/material";
+import { Box, Typography, Modal, Tab, Stack, IconButton } from "@mui/material";
 import Scrollbars from "react-custom-scrollbars";
 //
 
@@ -22,10 +12,9 @@ import { Container, makeStyles, Tabs, Tooltip } from "@material-ui/core";
 import {
   accountCreated,
   createAccount,
-  hasAccount,
   reset,
 } from "../../store/ApplicationStates/applicationStateSlice";
-import { Cancel, Close } from "@material-ui/icons";
+import { Close } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   fab: {

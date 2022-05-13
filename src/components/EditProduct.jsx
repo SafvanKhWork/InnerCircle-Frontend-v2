@@ -6,42 +6,23 @@ import {
   Box,
   Button,
   TextField,
-  MenuItem,
   Input,
-  IconButton,
 } from "@material-ui/core";
 
-import { Notifications as Notification } from "@material-ui/icons";
-import { Fragment, useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Carousel from "react-material-ui-carousel";
 import axios from "axios";
 import Confirm from "./Confirm";
 import { url, getAuthHeader } from "../config";
-
 import { Scrollbars } from "react-custom-scrollbars";
-import {
-  getToken,
-  refetchUser,
-  refreshUserField,
-} from "../store/User/userSlice";
 import { setSpecifiedList } from "../store/Products/productListSlice";
 import {
   Alert,
-  Avatar,
-  Checkbox,
-  Collapse,
-  Divider,
-  Fab,
-  FormControlLabel,
   ImageList,
   ImageListItem,
   Snackbar,
   Stack,
-  Switch,
-  Typography,
 } from "@mui/material";
-import UserMinibar from "./Details/Single Items/UserMinibar";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -107,13 +88,6 @@ const EditProduct = (props) => {
       return { status: false, productId: undefined };
     }
   };
-  // useEffect(() => {
-  //   return () => {
-  //     setPreviewSource([]);
-  //     setFiles([]);
-  //     setPrice(0);
-  //   };
-  // }, []);
   const previewImage = previewSource.map((img, i) => (
     <ImageListItem key={i + `${Math.random()}`}>
       <div

@@ -7,13 +7,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Tooltip } from "chart.js";
-import Post from "./Post";
 import React, { useEffect, useState } from "react";
-import { Close } from "@material-ui/icons";
 import axios from "axios";
 import { getAuthHeader, url } from "../config";
-import PreviewIcon from "@mui/icons-material/Preview";
 import validator from "validator";
 import { Box } from "@mui/system";
 import { useSelector } from "react-redux";
