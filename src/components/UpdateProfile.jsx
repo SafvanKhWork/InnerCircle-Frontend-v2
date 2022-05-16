@@ -110,7 +110,7 @@ const UpdateProfile = (props) => {
       </Tooltip>
       <Modal
         onClose={async () => {
-          setOpen(false);
+          // setOpen(false);
         }}
         open={open}
       >

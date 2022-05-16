@@ -1,6 +1,7 @@
 import {
   Box,
   Container,
+  LinearProgress,
   makeStyles,
   Tab,
   Tabs,
@@ -105,6 +106,7 @@ export default function Admin() {
   const [meta, setMeta] = useState({});
   const [rug, setRug] = useState(false);
   const [spin, setSpin] = useState(false);
+  const [loading, setLoading] = useState(true);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -112,10 +114,19 @@ export default function Admin() {
   React.useEffect(async () => {
     const { data } = await axios.get(`${url}/admin/dash`, getAuthHeader(token));
     if (data) {
+      setLoading(false);
       setMeta(data);
     }
     return () => {};
   }, [token, rug]);
+
+  if (loading) {
+    return (
+      <Container className={classes.container}>
+        <LinearProgress />
+      </Container>
+    );
+  }
 
   return (
     <Container className={classes.container}>
