@@ -6,7 +6,7 @@ import Navbar from "./components/Navbar";
 import Rightbar from "./components/Rightbar";
 import { useEffect } from "react";
 import axios from "axios";
-import { getAuthHeader, url } from "./config";
+import { getAuthHeader, refreshEvery, url } from "./config";
 import { useDispatch, useSelector } from "react-redux";
 import { refreshUser } from "./store/User/userSlice";
 import { setSpecifiedList } from "./store/Products/productListSlice";
@@ -51,13 +51,14 @@ const App = () => {
   useEffect(async () => {
     if (token && token !== "") {
       const reloader = setInterval(() => {
-        dispatch(refetchUser);
+        dispatch(refetchUser());
         return () => {
           clearInterval(reloader);
         };
-      }, 10000);
+      }, refreshEvery);
     }
   }, [token]);
+
   //Get Products
   useEffect(async () => {
     try {

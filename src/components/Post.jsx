@@ -245,7 +245,7 @@ const Post = ({ imgs, title, description, product }) => {
             {recommandedBy ? (
               <Box
                 sx={{
-                  maxWidth: "20vw",
+                  maxWidth: "25vw",
                   backgroundColor: "#e8e8e8",
                   borderStyle: "solid",
                   borderColor: "#858383",
@@ -286,7 +286,7 @@ const Post = ({ imgs, title, description, product }) => {
                         ? " and +" + (suggesters.length - 1)
                         : ""
                     } recommanded
-              ${product?.name} to you.`}
+              "${product?.name}" to you.`}
                   </Typography>
                 </Stack>
               </Box>

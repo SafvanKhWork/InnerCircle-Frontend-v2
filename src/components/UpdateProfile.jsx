@@ -41,6 +41,7 @@ import Confirm from "./Confirm";
 import { logout as signout } from "../store/ApplicationStates/applicationStateSlice";
 import { useNavigate } from "react-router-dom";
 import HistoryPDF from "./pdfGen.jsx";
+import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   fab: {
@@ -80,7 +81,7 @@ const UpdateProfile = (props) => {
   const [open, setOpen] = useState(false);
   const [preview, setPreview] = useState("");
   const [name, setName] = useState(account.name);
-  //   const [email, setEmail] = useState(account.email);
+  const [error, setError] = useState(undefined);
   const [avatar, setAvatar] = useState(account.avatar);
   const [username, setUsername] = useState(account.username);
   const [password, setPassword] = useState("");
@@ -162,6 +163,13 @@ const UpdateProfile = (props) => {
                     </Box>
                   </label>
                 </div>
+                {error === "" ? (
+                  <div className={classes.item}>
+                    <Alert severity="warning">${error}</Alert>
+                  </div>
+                ) : (
+                  ""
+                )}
                 <div className={classes.item}>
                   <TextField
                     id="name"
@@ -215,12 +223,11 @@ const UpdateProfile = (props) => {
                       variant="outlined"
                       color="primary"
                       onClick={async () => {
-                        const data = await axios.patch(
+                        const { data } = await axios.patch(
                           `${url}/users/me`,
                           info,
                           getAuthHeader(token)
                         );
-
                         if (data) {
                           dispatch(refetchUser());
                           setName(account.name);
@@ -229,6 +236,9 @@ const UpdateProfile = (props) => {
                           setAvatar(account.avatar);
                           setOpen(false);
                           setDeleteColor("#f53f38");
+                          setError(undefined);
+                        } else {
+                          setError(`${username} is already taken.`);
                         }
                       }}
                     >
